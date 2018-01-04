@@ -1,12 +1,19 @@
+from dgsd_mesh import MeshType 
+import random
+
 class DGSD_Sprite:
     def __init__(self, mesh, pos):
-        self._mesh = mesh.split('\n')[1:-1]
+        self._mesh = [m.split('\n')[1:-1] for m in mesh.mesh]
+        self._meshType = mesh.meshType
 
         # remove first and last (empty) lines
         self.x = pos[0]
         self.y = pos[1]
 
-        self._height = len(self._mesh)
+        self._height = len(self._mesh[0])
+
+        self._meshAnimateNum = 0
+        self._meshSize = len(self._mesh)
 
     def print(self):
         for line in self._mesh:
@@ -14,7 +21,16 @@ class DGSD_Sprite:
 
     @property
     def mesh(self):
-        return self._mesh
+        index = 0
+        if(self._meshType == MeshType.animate):
+            index = (self._meshAnimateNum + 1) % self._meshSize
+            self._meshAnimateNum = index
+
+        elif(self._meshType == MeshType.random):
+            index = random.randrange(0, self._meshSize)
+
+        return self._mesh[index]
+
 
     @property
     def height(self):
