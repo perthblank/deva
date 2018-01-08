@@ -5,8 +5,10 @@ class DGSD_Sprite:
     def __init__(self, mesh, pos):
         self._mesh = [m.split('\n')[1:-1] for m in mesh.mesh]
         self._meshType = mesh.meshType
+        if(self._meshType == MeshType.random):
+            # randomly choose one
+            self._mesh = [self._mesh[random.randrange(0, len(self._mesh))]]
 
-        # remove first and last (empty) lines
         self.x = pos[0]
         self.y = pos[1]
 
@@ -26,8 +28,8 @@ class DGSD_Sprite:
             index = (self._meshAnimateNum + 1) % self._meshSize
             self._meshAnimateNum = index
 
-        elif(self._meshType == MeshType.random):
-            index = random.randrange(0, self._meshSize)
+        # elif(self._meshType == MeshType.random):
+        #     index = random.randrange(0, self._meshSize)
 
         return self._mesh[index]
 

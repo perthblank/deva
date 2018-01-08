@@ -1,4 +1,6 @@
-# put the quotes in single lines
+from dgsd_color import DGSD_Colors as dcolor
+
+
 
 class MeshType:
     static = 1
@@ -10,7 +12,7 @@ class DGSD_Mesh:
         self.mesh = mesh
         self.meshType = meshType
 
-
+# put the quotes in single lines
 _role = [\
 """
  o
@@ -38,7 +40,30 @@ _mountain = [\
  / `:     
 |   ::--` 
      `  - 
+""",\
+"""
+      -+//+         
+  `::.s   `s/--::   
+ `s` y:    `s.  `+/ 
+ ::  .+      /    
+ o`   +           
+ `                
 """
 ]
 
-mountain = DGSD_Mesh(_mountain, MeshType.static)
+mountain = DGSD_Mesh(_mountain, MeshType.random)
+
+_exitDialog = [\
+"""
+------------------""" + """
+|      Exit      |
+|      Save      |
+|      Back      |
+------------------
+"""]
+exitMenu = DGSD_Mesh(_exitDialog, MeshType.static) 
+
+MeshMap = {
+        'mountain': mountain,
+        'role': role
+        }

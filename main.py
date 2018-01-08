@@ -3,8 +3,11 @@ import time
 import heapq
 import threading
 
-import dgsd_mesh as dm
+from dgsd_mesh import MeshMap
 from dgsd_sprite import DGSD_Sprite
+from dgsd_scene import DGSD_Scene
+from dgsd_scene import SceneConfig0 #TODO
+#from dgsd_menu import TextMenu
 
 
 class MoveKey:
@@ -20,7 +23,9 @@ Directions = {
     MoveKey.right: [1, 0],
 }
 
-#Scene0
+class ControlMode:
+    normal = 1;
+    menu = 2;
 
 class DGSD_Game:
     def __init__(self, width, height):
@@ -29,14 +34,35 @@ class DGSD_Game:
 
         self.sprites = []
 
-        self.role = DGSD_Sprite(dm.role, [20, 20])
-        self.addSprite(self.role, 5)
-        self.addSprite(DGSD_Sprite(dm.mountain, [30,10]), 6)
+        # self.role = DGSD_Sprite(dm.role, [20, 20])
+        # self.addSprite(self.role, 5)
+
+        self.loadScene(SceneConfig0)
+
+        self._mode = ControlMode.normal
+        self.currentKey = ' '
+        # self.exitMenu = DGSD_Sprite(dm.exitMenu, [0, 0])
 
         self._ok = True
 
+    def loadScene(self, sceneConfig):
+        self.clearScene()
+
+        #self.currentScene = DGSD_Scene(sceneConfig)
+        scene = DGSD_Scene(sceneConfig)
+
+        self.role = DGSD_Sprite(MeshMap['role'], scene.rolePos)
+        self.addSprite(self.role, 5)
+
+        for node in scene.item:
+            self.addSprite(
+                DGSD_Sprite(MeshMap[node['meshName']], node['pos']), node['zindex'])
+
     def addSprite(self, sprite, priority):
         heapq.heappush(self.sprites, (priority, sprite))
+
+    def clearScene(self):
+        self.sprites = []
 
     def handleControl(self, key):
         if key in Directions:
@@ -50,11 +76,26 @@ class DGSD_Game:
     def handleKeys(self):
         while self._ok:
             key = stdscr.getkey()
-            self.handleControl(key)
-            self.handleUtil(key)
+            self.currentKey = key
+            if(self._mode == ControlMode.normal):
+                self.handleControl(key)
+                self.handleUtil(key)
+            # else:
+            #     self._activeMenu.handle(key)
+
 
     def quit(self):
         self._ok = False
+
+        return
+        # self._mode = ControlMode.menu
+        # self.showExit()
+        # self._activeMenu = self.exitMenu
+
+
+    def showExit(self):
+        pass
+
 
     def start(self):
         handleThread = threading.Thread(target=self.handleKeys)
@@ -68,14 +109,25 @@ class DGSD_Game:
 
     def renderSprites(self, lineNum, line):
         line = list(line)
-        for spriteEntry in self.sprites:
-            sprite = spriteEntry[1]
+
+        def renderLine(sprite):
             meshLineNum = lineNum - sprite.y
             if(meshLineNum >=0 and meshLineNum < sprite.height
                     and sprite.x >= 0 and sprite.x < self.width):
                 meshLine = sprite.mesh[meshLineNum]
                 for i in range(len(meshLine)):
+                    # if meshLine[i] != ' ':
+                    #     line[sprite.x + i] = meshLine[i]
                     line[sprite.x + i] = meshLine[i]
+
+        if self._mode == ControlMode.normal:
+            for spriteEntry in self.sprites:
+                sprite = spriteEntry[1]
+                renderLine(sprite)
+        elif self._mode == ControlMode.menu:
+            renderLine(self._activeMenu)
+            pass
+            
 
         return ''.join(line)
 
@@ -84,8 +136,8 @@ class DGSD_Game:
             for lineNum in range(0, self.height):
                 line = ' ' * self.width
                 if(lineNum == 0 or lineNum == self.height -1):
-                    board = "-" * self.width
-                    stdscr.addstr(lineNum, 0, board)
+                    board = self.currentKey + "-" * (self.width - 1)
+                    stdscr.addstr(lineNum, 0, board, curses.color_pair(1))
                 else:
                     line = self.renderSprites(lineNum, line)
                     line = '|' + line[1:]
@@ -93,11 +145,15 @@ class DGSD_Game:
                     stdscr.addstr(lineNum, 0, line)
             stdscr.refresh()
 
+        stdscr.refresh()
 
 if __name__ == "__main__":
     stdscr = curses.initscr()
     curses.noecho()
     curses.cbreak()
+
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
 
 
     game = DGSD_Game(130, 40)
