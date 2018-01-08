@@ -34,9 +34,6 @@ class DGSD_Game:
 
         self.sprites = []
 
-        # self.role = DGSD_Sprite(dm.role, [20, 20])
-        # self.addSprite(self.role, 5)
-
         self.loadScene(SceneConfig0)
 
         self._mode = ControlMode.normal
@@ -47,11 +44,10 @@ class DGSD_Game:
 
     def loadScene(self, sceneConfig):
         self.clearScene()
-
         #self.currentScene = DGSD_Scene(sceneConfig)
         scene = DGSD_Scene(sceneConfig)
 
-        self.role = DGSD_Sprite(MeshMap['role'], scene.rolePos)
+        self.role = DGSD_Sprite(MeshMap['role'], scene.rolePos, 1)
         self.addSprite(self.role, 5)
 
         for node in scene.item:
@@ -68,6 +64,7 @@ class DGSD_Game:
         if key in Directions:
             self.role.x = self.role.x + Directions[key][0]
             self.role.y = self.role.y + Directions[key][1]
+            self.role.touch()
 
     def handleUtil(self, key):
         if key == 'q':
@@ -107,42 +104,36 @@ class DGSD_Game:
         handleThread.join()
         renderThread.join()
 
-    def renderSprites(self, lineNum, line):
-        line = list(line)
+    def renderSprites(self, lineNum):
 
         def renderLine(sprite):
             meshLineNum = lineNum - sprite.y
             if(meshLineNum >=0 and meshLineNum < sprite.height
                     and sprite.x >= 0 and sprite.x < self.width):
                 meshLine = sprite.mesh[meshLineNum]
-                for i in range(len(meshLine)):
-                    # if meshLine[i] != ' ':
-                    #     line[sprite.x + i] = meshLine[i]
-                    line[sprite.x + i] = meshLine[i]
+                stdscr.addstr(lineNum, sprite.x , meshLine, curses.color_pair(sprite.colorNum))
 
         if self._mode == ControlMode.normal:
             for spriteEntry in self.sprites:
                 sprite = spriteEntry[1]
                 renderLine(sprite)
+
         elif self._mode == ControlMode.menu:
             renderLine(self._activeMenu)
             pass
             
 
-        return ''.join(line)
-
     def render(self):
         while self._ok:
+            stdscr.erase()
             for lineNum in range(0, self.height):
-                line = ' ' * self.width
                 if(lineNum == 0 or lineNum == self.height -1):
                     board = self.currentKey + "-" * (self.width - 1)
-                    stdscr.addstr(lineNum, 0, board, curses.color_pair(1))
+                    stdscr.addstr(lineNum, 0, board)
                 else:
-                    line = self.renderSprites(lineNum, line)
-                    line = '|' + line[1:]
-                    line = line[0:-1] + '|'
-                    stdscr.addstr(lineNum, 0, line)
+                    self.renderSprites(lineNum)
+                    stdscr.addstr(lineNum, 0, '|')
+                    stdscr.addstr(lineNum, self.width-1, '|')
             stdscr.refresh()
 
         stdscr.refresh()
@@ -153,7 +144,7 @@ if __name__ == "__main__":
     curses.cbreak()
 
     curses.start_color()
-    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
+    curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)
 
 
     game = DGSD_Game(130, 40)
