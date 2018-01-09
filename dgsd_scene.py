@@ -1,15 +1,19 @@
+import dgsd_color as dcolor
+
 SceneConfig0 = {
     'rolePos': [20, 20],
     'item': [
         {
             'meshName': 'mountain',
             'pos': [30, 10],
-            'zindex': 6
+            'zindex': 4,
+            'colorId': dcolor.GREEN.id,
         },
         {
             'meshName': 'mountain',
             'pos': [40, 20],
-            'zindex': 6
+            'zindex': 4,
+            'colorId': dcolor.GREEN.id,
         },
     
     ]

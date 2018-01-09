@@ -2,17 +2,23 @@ from dgsd_mesh import MeshType
 import random
 
 class DGSD_Sprite:
-    def __init__(self, mesh, pos, colorNum = 0):
-        self._mesh = [m.split('\n')[1:-1] for m in mesh.mesh]
-        self._meshType = mesh.meshType
-        if(self._meshType == MeshType.random):
-            # randomly choose one
-            self._mesh = [self._mesh[random.randrange(0, len(self._mesh))]]
+    def __init__(self, mesh, pos, colorId = 0):
+        if isinstance(mesh.mesh, list):
+            self._mesh = [m.split('\n')[1:-1] for m in mesh.mesh]
+            self._meshType = mesh.meshType
+            if(self._meshType == MeshType.RANDOM):
+                # randomly choose one
+                self._mesh = [self._mesh[random.randrange(0, len(self._mesh))]]
+            else:
+                pass
+
+        elif isinstance(mesh.mesh, str):
+            self._mesh = [mesh.mesh.split('\n')[1:-1]]
 
         self.x = pos[0]
         self.y = pos[1]
 
-        self._colorNum = colorNum
+        self._colorId = colorId
 
         self._height = len(self._mesh[0])
 
@@ -24,18 +30,17 @@ class DGSD_Sprite:
             print("\r" + line)
 
     def touch(self):
-        if(self._meshType == MeshType.animate):
+        if(self._meshType == MeshType.ANIMATE):
             index = (self._meshAnimateNum + 1) % self._meshSize
             self._meshAnimateNum = index
 
     @property
-    def colorNum(self):
-        return self._colorNum
+    def colorId(self):
+        return self._colorId
 
     @property
     def mesh(self):
         return self._mesh[self._meshAnimateNum]
-
 
     @property
     def height(self):
@@ -66,5 +71,9 @@ class DGSD_Sprite:
     def y(self, val):
         self._y = max(0, val)
 
+    
+    def __lt__(self, other):
+        # dont care the order
+        return True
 
 
