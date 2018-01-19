@@ -1,4 +1,5 @@
 import curses
+from dgsd_const import ColorId
 
 class ColorPair:
     def __init__(self, id, front, back = curses.COLOR_BLACK):
@@ -19,7 +20,7 @@ class ColorPair:
         return self._back
 
 
-YELLOW = ColorPair(1, curses.COLOR_YELLOW)
-GREEN = ColorPair(2, curses.COLOR_GREEN)
+YELLOW = ColorPair(ColorId.YELLOW, curses.COLOR_YELLOW)
+GREEN = ColorPair(ColorId.GREEN, curses.COLOR_GREEN)
     
 COLORS = [YELLOW, GREEN]

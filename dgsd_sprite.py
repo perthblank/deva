@@ -4,35 +4,36 @@ import random
 class DGSD_Sprite:
     def __init__(self, mesh, pos, colorId = 0):
         if isinstance(mesh.mesh, list):
-            self._mesh = [m.split('\n')[1:-1] for m in mesh.mesh]
-            self._meshType = mesh.meshType
-            if(self._meshType == MeshType.RANDOM):
+            self.meshList = [m.split('\n')[1:-1] for m in mesh.mesh]
+            self.meshListType = mesh.meshType
+            if(self.meshListType == MeshType.RANDOM):
                 # randomly choose one
-                self._mesh = [self._mesh[random.randrange(0, len(self._mesh))]]
+                self.meshList = [self.meshList[random.randrange(0, len(self.meshList))]]
             else:
                 pass
 
         elif isinstance(mesh.mesh, str):
-            self._mesh = [mesh.mesh.split('\n')[1:-1]]
+            self.meshList = [mesh.mesh.split('\n')[1:-1]]
 
         self.x = pos[0]
         self.y = pos[1]
 
         self._colorId = colorId
 
-        self._height = len(self._mesh[0])
+        self._height = len(self.meshList[0])
+        self._width = len(self.meshList[0][0])
 
-        self._meshAnimateNum = 0
-        self._meshSize = len(self._mesh)
+        self.meshListAnimateNum = 0
+        self.meshListSize = len(self.meshList)
 
     def print(self):
-        for line in self._mesh:
+        for line in self.meshList:
             print("\r" + line)
 
     def touch(self):
-        if(self._meshType == MeshType.ANIMATE):
-            index = (self._meshAnimateNum + 1) % self._meshSize
-            self._meshAnimateNum = index
+        if(self.meshListType == MeshType.ANIMATE):
+            index = (self.meshListAnimateNum + 1) % self.meshListSize
+            self.meshListAnimateNum = index
 
     @property
     def colorId(self):
@@ -40,11 +41,15 @@ class DGSD_Sprite:
 
     @property
     def mesh(self):
-        return self._mesh[self._meshAnimateNum]
+        return self.meshList[self.meshListAnimateNum]
 
     @property
     def height(self):
         return self._height
+
+    @property
+    def width(self):
+        return self._width
 
     @property
     def pos(self):

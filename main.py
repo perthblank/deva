@@ -6,54 +6,22 @@ import threading
 from dgsd_mesh import MeshMap, DGSD_Mesh
 from dgsd_sprite import DGSD_Sprite
 from dgsd_scene import DGSD_Scene
-from dgsd_scene import SceneConfig0 #TODO
+from dgsd_scene import SceneMap #TODO
 
 from dgsd_menu import DGSD_Menu, MenuMap
 
 import dgsd_color as dcolor
 import dgsd_mesh as dm
 
-class MoveKey:
-    UP = 'w'
-    DOWN = 's'
-    LEFT = 'a'
-    RIGHT = 'd'
-
-Directions = {
-    MoveKey.UP: [0, -1],
-    MoveKey.DOWN: [0, 1],
-    MoveKey.LEFT: [-1, 0],
-    MoveKey.RIGHT: [1, 0],
-}
-
-class MyKeyCode:
-    ENTER = 10
-
-class MenuConst:
-    X = 3
-    Y = 1
-    X_ARR = 1
-
-class SConst:
-    BACK = 'Back'
-    SAVE = 'Save'
-    EXIT = 'Exit'
-
-class ControlMode:
-    GAME = 1;
-    MENU = 2;
+from dgsd_const import *
 
 class DGSD_Game:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.sprites = []
-        self._mode = ControlMode.GAME
 
-        self.loadScene(SceneConfig0)
-
+        self.printMsg = ''
         self.currentKey = ' '
-        self.printStr = ''
 
         self._exitMenuMap = MenuMap({
            SConst.BACK: self.resume,
@@ -61,6 +29,8 @@ class DGSD_Game:
            SConst.EXIT: self.exit
         }, [SConst.BACK, SConst.SAVE, SConst.EXIT])
 
+        self.loadScene(SceneMap['jiangnanMain'])
+        self._mode = ControlMode.GAME
         self._ok = True
 
     def start(self):
@@ -80,14 +50,39 @@ class DGSD_Game:
         self.addSprite(self.role, 5)
 
         for node in scene.item:
-            self.addSprite(
-                DGSD_Sprite(MeshMap[node['meshName']], node['pos'], node.get('colorId', 0)), node['zindex'])
+            sprite = DGSD_Sprite(MeshMap[node['meshName']], node['pos'], node.get('colorId', 0))
+            self.addSprite(sprite, node['zindex'], node['gridType'])
+            if 'triggerType' in node and 'triggerItem' in node:
+                triggerPos = []
+                for row in range(sprite.height):
+                    triggerPos += [(i + sprite.x, row + sprite.y) for i, c in enumerate(sprite.mesh[row]) if c == TRIGGER_CHAR]
+                triggerObj = {'type': node['triggerType'], 'item': node['triggerItem']}
+                #self.printMsg = str(triggerPos)
+                for t in triggerPos:
+                    self.triggers[self.getGridId(t[0], t[1])] = triggerObj
 
-    def addSprite(self, sprite, priority):
+
+
+    def getGridId(self, x, y):
+        return x * self.height + y
+
+    def isFreeGrid(self, x, y):
+        return self.map[self.getGridId(x, y)] == MapGridType.FREE
+
+    def getTrigger(self, x, y):
+        return self.triggers.get(self.getGridId(x, y), None)
+
+    def addSprite(self, sprite, priority, gridType = MapGridType.FREE):
         heapq.heappush(self.sprites, (priority, sprite))
+        for row in range(sprite.height):
+            for col in range(sprite.width):
+                gridId = self.getGridId((col + sprite.x), (row + sprite.y))
+                self.map[gridId] = gridType 
 
     def clearScene(self):
         self.sprites = []
+        self.triggers = {}
+        self.map = [MapGridType.FREE] * self.width * self.height
 
     def handleControl(self, keyCode):
         key = ''
@@ -95,15 +90,32 @@ class DGSD_Game:
             key = chr(keyCode)
         if key in Directions:
             x, y = (self.role.x + Directions[key][0], self.role.y + Directions[key][1])
-            if x > 0 and x < self.width and y > 0 and y < self.height - self.role.height:
-                self.role.pos = (x, y)
+            if x > 0 and x < self.width - self.role.width and y > 0 and y < self.height - self.role.height:
+                canStep = True
+                for col in range(self.role.width):
+                    for row in range(self.role.height):
+                        if not self.isFreeGrid(col + x, row + y):
+                            canStep = False
+                            break
+                    if not canStep:
+                        break
+
+                if canStep:
+                    self.role.pos = (x, y)
+                else:
+                    triggerObj = self.getTrigger(x + RoleConst.HEAD_X, y + RoleConst.HEAD_Y)
+                    if triggerObj:
+                        if triggerObj['type'] == TriggerType.CHANGE_SCENE:
+                            #self.save()
+                            self.loadScene(SceneMap[triggerObj['item']])
+
             self.role.touch()
 
     def handleUtil(self, keyCode):
         key = ''
         if(keyCode < 255):
             key = chr(keyCode)
-        if key == 'q':
+        if keyCode == MyKeyCode.ESC:
             self._mode = ControlMode.MENU
             self.showExitMenu()
 
@@ -125,7 +137,8 @@ class DGSD_Game:
 
     def showExitMenu(self):
         self._activeMenu = DGSD_Menu(self._exitMenuMap.keys, (MenuConst.X, MenuConst.Y))
-        self._menuArr = DGSD_Sprite(DGSD_Mesh(['\n>\n']), (MenuConst.X_ARR, MenuConst.Y), dcolor.YELLOW.id) 
+        # create an arrow >
+        self._menuArr = DGSD_Sprite(DGSD_Mesh(['\n>\n']), (MenuConst.X_ARR, MenuConst.Y), ColorId.YELLOW) 
         self._menuOpt = 0
 
     def handleKeys(self):
@@ -152,9 +165,10 @@ class DGSD_Game:
     def showExit(self):
         pass
 
-    def renderSprites(self, lineNum):
+    def renderLine(self, lineNum):
+        # deprecated for now
 
-        def renderLine(sprite):
+        def renderSpriteOnLine(sprite):
             meshLineNum = lineNum - sprite.y
             if(meshLineNum >=0 and meshLineNum < sprite.height
                     and sprite.x >= 0 and sprite.x < self.width):
@@ -163,28 +177,53 @@ class DGSD_Game:
 
         for spriteEntry in self.sprites:
             sprite = spriteEntry[1]
-            renderLine(sprite)
+            renderSpriteOnLine(sprite)
 
         if self._mode == ControlMode.MENU:
-          renderLine(self._activeMenu)
-          renderLine(self._menuArr)
-          pass
+          renderSpriteOnLine(self._activeMenu)
+          renderSpriteOnLine(self._menuArr)
+
+
+    def renderSprite(self, sprite):
+        for row in range(sprite.height):
+            meshRow = sprite.mesh[row]
+            stdscr.addstr(sprite.y + row, sprite.x, meshRow, curses.color_pair(sprite.colorId))
+
             
 
     def render(self):
         time0 = time.clock()
         fps = 0
         lastFps = 0
+        lineFlush = ' ' * self.width
         while self._ok:
             stdscr.erase()
             for lineNum in range(0, self.height):
+                # draw broad
                 if(lineNum == 0 or lineNum == self.height -1):
-                    board = self.currentKey + "-" * (self.width - 1)
+                    board = "-" * self.width
                     stdscr.addstr(lineNum, 0, board)
+                    stdscr.addstr(lineNum, 0, self.currentKey)
                 else:
-                    self.renderSprites(lineNum)
+                    #self.renderLine(lineNum)
+                    stdscr.addstr(lineNum, 0, lineFlush)
                     stdscr.addstr(lineNum, 0, '|')
                     stdscr.addstr(lineNum, self.width-1, '|')
+
+            for s in self.sprites:
+                sprite = s[1]
+                self.renderSprite(sprite)
+
+            mapDebug = False
+            if mapDebug:
+                for row in range(1, self.height -1):
+                    for col in range(1, self.width -1):
+                        stdscr.addstr(row, col, str(self.map[self.getGridId(col, row)]))
+                self.renderSprite(self.role)
+
+            if self._mode == ControlMode.MENU:
+                self.renderSprite(self._activeMenu)
+                self.renderSprite(self._menuArr)
 
             fps += 1
             time1 = time.time()
@@ -194,7 +233,7 @@ class DGSD_Game:
                 time0 = time1
 
             stdscr.addstr(0, 20, 'fps:' + str(lastFps))
-            stdscr.addstr(self.height - 1, 20, self.printStr)
+            stdscr.addstr(self.height - 1, 20, self.printMsg)
 
             stdscr.refresh()
 

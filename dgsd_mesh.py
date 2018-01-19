@@ -11,19 +11,20 @@ class DGSD_Mesh:
 # put the quotes in single lines
 _role = [\
 """
- o
+ o 
 -+-
- ^
+ ^ 
 """,\
 """
- o
+ o 
 -+-
- "
+ " 
 """]
 
 
 role = DGSD_Mesh(_role, MeshType.ANIMATE)
 
+#4x9
 _mountain = [\
 """
     .-.  
@@ -32,34 +33,38 @@ _mountain = [\
 .  `    .
 """,\
 """
- -.-      
- / `:     
-|   ::--` 
-     `  - 
+ -.-     
+ / `:    
+|   ::--`
+     `  -
 """,\
 """
-      -+//+         
-  `::.s   `s/--::   
- `s` y:    `s.  `+/ 
- ::  .+      /    
- o`   +           
- `                
+-+//+         
+s   `s/--
+:    `s. 
++      / 
 """
 ]
 
 mountain = DGSD_Mesh(_mountain, MeshType.RANDOM)
 
-exitDialog = [\
+_house = [\
 """
-------------------""" + """
-|      Exit      |
-|      Save      |
-|      Back      |
-------------------
-"""]
-exitMenu = DGSD_Mesh(exitDialog) 
+        `-///:   
+    -///:    `+/ 
+ oy+.  xxxx.///o+
+o- :++------   -+
+d///::h        -+
+y     y   |    -+
+y     y   |    -+
+--------###------
+"""
+]
+
+house = DGSD_Mesh(_house, MeshType.STATIC)
 
 MeshMap = {
         'mountain': mountain,
-        'role': role
+        'role': role,
+        'house': house,
         }
