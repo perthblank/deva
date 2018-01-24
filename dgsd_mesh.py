@@ -24,6 +24,16 @@ _role = [\
 
 role = DGSD_Mesh(_role, MeshType.ANIMATE)
 
+_npc = [\
+"""
+ o 
++++
+ ^
+"""
+]
+
+npc = DGSD_Mesh(_npc)
+
 #4x9
 _mountain = [\
 """
@@ -67,4 +77,5 @@ MeshMap = {
         'mountain': mountain,
         'role': role,
         'house': house,
+        'npc': npc,
         }

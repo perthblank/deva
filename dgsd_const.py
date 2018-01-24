@@ -36,10 +36,10 @@ class ControlMode:
 class MapGridType:
     FREE = '_'
     BLOCK = 2
-    TRIGGER = 3
 
 class TriggerType:
     CHANGE_SCENE = 1
+    CHAT = 2
 
 class ColorId:
     YELLOW = 1

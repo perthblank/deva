@@ -21,7 +21,22 @@ class DGSD_Menu(DGSD_Sprite):
         mesh = '\n' + '\n'.join(keys) + '\n'
         super(DGSD_Menu, self).__init__(DGSD_Mesh(mesh), pos, colorId)
         self._keys = keys
+        self._opt = 0
 
-    def item(self, i):
-        return self._keys[i]
+    def currentKey(self):
+        return self._keys[self.opt]
+
+    def arrUp(self):
+        self.opt = self.opt - 1
+
+    def arrDown(self):
+        self.opt = self.opt + 1
+
+    @property
+    def opt(self):
+        return self._opt
+
+    @opt.setter
+    def opt(self, val):
+        self._opt = max(0, min(val, self.height -1))
 

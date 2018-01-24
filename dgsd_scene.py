@@ -18,6 +18,15 @@ jiangnanMain = {
     'rolePos': [20, 20],
     'item': [
         {
+            'meshName': 'npc',
+            'pos': [10, 10],
+            'zindex': 4,
+            'colorId': ColorId.YELLOW,
+            'gridType': MapGridType.BLOCK,
+            'triggerType': TriggerType.CHAT,
+            'triggerItem': 'chat0',
+        },
+        {
             'meshName': 'mountain',
             'pos': [30, 10],
             'zindex': 4,
@@ -36,7 +45,7 @@ jiangnanMain = {
             'pos': [80, 10],
             'zindex': 4,
             'colorId': ColorId.YELLOW,
-            'gridType': MapGridType.TRIGGER,
+            'gridType': MapGridType.BLOCK,
             'triggerType': TriggerType.CHANGE_SCENE,
             'triggerItem': 'guilinMain',
         },
