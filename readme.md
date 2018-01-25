@@ -16,7 +16,7 @@ Keys: `w`, `a`, `s`, `d`, `Esc`, `Enter`
 
 
 ### Make a game
-This project provide the following RPG factors to config:
+This project provides the following RPG factors to config:
 - mesh
 - scene
 - chat
@@ -33,6 +33,46 @@ A mesh is a character layout. Any item in the scene is a mesh. There're three ty
 - `MeshType.STATIC`: a static mesh (eg. `house`)
 - `MeshType.ANIMATE`: an animating mesh, the mesh will play next frame on each mesh (eg. `role`)
 - `MeshType.RANDOM`: the game will randomly load one frame from the given mesh list when starts (eg, `rock`)
+
+Example:
+```python
+# put the quotes in single lines
+_role = [
+"""
+ o 
+-+-
+ ^ 
+""",\
+"""
+ o 
+-+-
+ " 
+"""]
+
+# renderer will loop the two frames in cycle
+role = DGSD_Mesh(_role, MeshType.ANIMATE)
+
+
+_temple = [
+"""
+         /-          
+       .+-+::-``     
+   ``-/:`.d-``-::::::
+-::--. `-+h-::-.`  /.
+:/-.:++//.y...://:/- 
+  `.o             +  
+    y     -----:  s  
+    s     y.```y  y  
+    +-    m`   s  y  
+    ::    y    s  s  
+    :+::::+####+::/  
+"""
+]
+
+# a static mesh, and the `#` on the edge will be recognized as trigger point
+# if this mesh is configed as trigger `CHANGE_SCENE` in scene config
+temple = DGSD_Mesh(_temple)
+```
 
 #### Scene
 Refer `config_scene.py`
