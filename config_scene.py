@@ -41,15 +41,6 @@ main = {
             'bold': True,
         },
         {
-            'meshName': 'box',
-            'pos': [30,6],
-            'zindex': 5,
-            'colorId': ColorId.YELLOW,
-            'gridType': MapGridType.BLOCK,
-            'triggerType': TriggerType.CHANGE_SCENE,
-
-        },
-        {
             'meshName': 'grass',
             'pos': [5, 5],
             'zindex': 0,
@@ -63,6 +54,24 @@ main = {
             'colorId': ColorId.BLUE,
             'gridType': MapGridType.FREE,
             'bold': True,
+        },
+        {
+            'meshName': 'box',
+            'pos': [65,7],
+            'zindex': 5,
+            'colorId': ColorId.YELLOW,
+            'gridType': MapGridType.BLOCK,
+            'triggerType': TriggerType.ITEM,
+            'triggerItem': 'jinchuangyao',
+        },
+        {
+            'meshName': 'box',
+            'pos': [30,6],
+            'zindex': 5,
+            'colorId': ColorId.YELLOW,
+            'gridType': MapGridType.BLOCK,
+            'triggerType': TriggerType.ITEM,
+            'triggerItem': 'sword',
         },
     
     ]

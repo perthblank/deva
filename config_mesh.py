@@ -137,10 +137,13 @@ temple = DGSD_Mesh(_temple)
 _box = [
 """
 x
+""",
+"""
+o
 """
 ]
 
-box = DGSD_Mesh(_box)
+box = DGSD_Mesh(_box, MeshType.ANIMATE_AUTO)
 
 MeshMap = {
         'rock': rock,

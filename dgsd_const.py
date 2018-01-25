@@ -47,7 +47,7 @@ class MapGridType:
 class TriggerType:
     CHANGE_SCENE = 1
     CHAT = 2
-    PICK_UP = 3
+    ITEM = 3
 
 class ColorId:
     YELLOW  = 1
@@ -69,4 +69,8 @@ class ChatTextType:
 class ChatBoxConst:
     X = 4
 
+class ItemType:
+    WEAPON = 1
+    ARMOR = 2
+    MEDICIEN = 3
 

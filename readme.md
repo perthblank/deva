@@ -102,7 +102,7 @@ Each mesh node has following attribute:
 - `zindex`: higher value ones will cover lower ones
 - `colorId`(*optinal*): constant from `ColorId.YELLOW, ColorId.GREEN, ColorId.BLUE, ColorId.RED, ColorId.MAGENTA, ColorId.CYAN`
 - `gridType`: constant from `MapGridType.BLOCK, MapGridType.FREE`, where `BLOCK` means the role can not step on the mesh
-- `triggerType`(*optinal*): constant from `TriggerType.CHAT, TriggerType.CHANGE_SCENE`, where `CHAT` will trigger a chat when collide with the mesh (npc), and `CHANGE_SCENE` will load another scene when the role collides with the `TRIGGER_CHAR`(#) on the mesh. The attribute come along with `triggerItem`
+- `triggerType`(*optinal*): constant from `TriggerType.CHAT, TriggerType.CHANGE_SCENE, TriggerType.ITEM`, where `CHAT` will trigger a chat when collide with the mesh (npc), and `CHANGE_SCENE` will load another scene when the role collides with the `TRIGGER_CHAR`(#) on the mesh, and `ITEM` can be picked up (need inventory to complete). The attribute come along with `triggerItem`
 - `triggerItem`(*optinal*): chat or scene name defined in config
 - `bold`(*optinal*): show the mesh characters in bold font
 
