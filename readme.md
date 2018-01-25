@@ -27,7 +27,7 @@ next
 - task system
 
 #### Mesh
-Refer `mesh_config.py`
+Refer `config_mesh.py`
 
 A mesh is a character layout. Any item in the scene is a mesh. There're three types of mesh supported:
 - `MeshType.STATIC`: a static mesh (eg. `house`)
@@ -35,7 +35,7 @@ A mesh is a character layout. Any item in the scene is a mesh. There're three ty
 - `MeshType.RANDOM`: the game will randomly load one frame from the given mesh list when starts (eg, `rock`)
 
 #### Scene
-Refer `scene_config.py`
+Refer `config_scene.py`
 
 A scene is defined as the starting place of role and all other mesh items.
 ```
@@ -55,7 +55,7 @@ Each mesh item has following attribute:
 - `bold`(*optinal*): show the mesh characters in bold font
 
 #### Chat
-Refer `chat_config.py`
+Refer `config_chat.py`
 
 A chat is defined as a list of chat items. Each chat item has  following attribute:
 - `id`: index of the item
