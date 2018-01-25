@@ -1,6 +1,6 @@
 # DGSD
 ## the Demi-Gods and the Semi-Devils (天龙八部)
-Enjoy the game, in terminal.
+Enjoy an RPG, in terminal.
 
 ### What is DGSD
 - A terminal RPG
@@ -156,6 +156,7 @@ A smaller viewport will render a part of the scene, and the camera will follow t
 ```
 When the viewport is larger or equal than the scene dimension, the whole scene will be displayed
 
+### acknowledgement
 I create this project in memory to my favourite PC game ever.
 ![TianLong](img/tianlongbabu.jpg)
 
