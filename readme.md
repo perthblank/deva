@@ -10,9 +10,8 @@ Text-image rendered by `curses` in python.
 
 ### Play
 ```
-python3 main.py
+python3 dgsd_game.py
 ```
-Keys: `w`, `a`, `s`, `d`, `Esc`, `Enter`
 
 Or in python code
 ```python
@@ -21,6 +20,7 @@ game = DGSD_Game(viewportWidth, viewportHeight)
 game.start()
 ```
 
+Keys: `w`, `a`, `s`, `d`, `Esc`, `Enter`
 
 ### Make a game
 This project provides the following RPG factors to config:
@@ -119,6 +119,42 @@ A chat is defined as a list of chat nodes. Each chat node has  following attribu
 - `exclude_status`: status that if triggered by previous chat nodes, this node will not be shown anymore
 - `prereq_status`: status that needed to be triggered to show this node
 
+
+#### Viewport
+A smaller viewport will render a part of the scene, and the camera will follow the role
+```
+100-----------------fps:556-------------
+|......................................|
+|...........x....        `-///:   .....|
+|................    -///:    `+/ .....|
+|........-+//+ .. oy+.  xxxx.///o+    .|
+|........s   `s/-o- :++------   -+`/-+`|
+|........:    `s.d///::h        -+/  : |
+|........+      /y     y   |    -+.  ` |
+|................y     y   |    -+.....|
+|................--------###------.....|
+|......................................|
+|                                      |
+|       o                              |
+|      +++                             |
+|       ^                              |
+|                    o                 |
+|                   -+-                |
+|                    "                 |
+|                                      |
+|                                      |
+|                                      |
+|                                      |
+|                                     `|
+|                `````       :::-.```` |
+|``````````````         ````-          |
+|````````````            `:::::       -|
+|````                 `.               |
+|       ```````````       ::.     `````|
+|                                      |
+----------------------------------------
+```
+When the viewport is larger or equal than the scene dimension, the whole scene will be displayed
 
 I create this project in memory to my favourite PC game ever.
 ![TianLong](img/tianlongbabu.jpg)

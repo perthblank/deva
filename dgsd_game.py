@@ -255,7 +255,7 @@ class DGSD_Game:
 
 
 if __name__ == "__main__":
-    game = DGSD_Game(70, 30)
+    game = DGSD_Game(40, 30)
     try:
         game.start()
     finally:
