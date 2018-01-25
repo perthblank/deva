@@ -4,11 +4,11 @@ Enjoy the game, in terminal.
 
 ### What is DGSD
 - A terminal RPG
-- A terminal RPG maker
+- A terminal RPG maker by writing config files
 
 Text-image rendered by `curses` in python.
 
-### Play
+### Get started
 ```
 python3 dgsd_game.py
 ```
