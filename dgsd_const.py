@@ -11,6 +11,11 @@ Directions = {
     MoveKey.RIGHT: [1, 0],
 }
 
+class MeshType:
+    STATIC = 1
+    RANDOM = 2
+    ANIMATE = 3
+
 class MyKeyCode:
     ENTER = 10
     ESC = 27
@@ -43,8 +48,12 @@ class TriggerType:
     CHAT = 2
 
 class ColorId:
-    YELLOW = 1
-    GREEN = 2
+    YELLOW  = 1
+    GREEN   = 2
+    BLUE    = 3
+    RED     = 4
+    MAGENTA = 5
+    CYAN    = 6
 
 
 TRIGGER_CHAR = '#'

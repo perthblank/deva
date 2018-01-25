@@ -1,8 +1,8 @@
-from dgsd_mesh import MeshType 
+from dgsd_const import MeshType 
 import random
 
 class DGSD_Sprite:
-    def __init__(self, mesh, pos, colorId = 0):
+    def __init__(self, mesh, pos, colorId = 0, bold = False):
         if isinstance(mesh.mesh, list):
             self.meshList = [m.split('\n')[1:-1] for m in mesh.mesh]
             self.meshListType = mesh.meshType
@@ -22,6 +22,8 @@ class DGSD_Sprite:
 
         self._height = len(self.meshList[0])
         self._width = len(self.meshList[0][0])
+
+        self._bold = bold
 
         self.meshListAnimateNum = 0
         self.meshListSize = len(self.meshList)
@@ -76,7 +78,10 @@ class DGSD_Sprite:
     def y(self, val):
         self._y = max(0, val)
 
-    
+    @property
+    def bold(self):
+        return self._bold
+
     def __lt__(self, other):
         # dont care the order
         return True

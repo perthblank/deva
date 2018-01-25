@@ -41,7 +41,10 @@ class DGSD_Renderer:
     def renderSprite(self, sprite):
         for row in range(sprite.height):
             meshRow = sprite.mesh[row]
-            self.stdscr.addstr(sprite.y + row, sprite.x, meshRow, curses.color_pair(sprite.colorId))
+            attr = curses.color_pair(sprite.colorId)
+            if sprite.bold:
+                attr |= curses.A_BOLD
+            self.stdscr.addstr(sprite.y + row, sprite.x, meshRow, attr)
 
     def renderMenu(self, menu):
         self._menuArr.x = menu.x - 2
@@ -61,7 +64,6 @@ class DGSD_Renderer:
             self.renderMenu(menu)
             for i in range(len(titles)):
                 self.stdscr.addstr(self.height - 2 - len(titles) + i - menu.height, 2, titles[i])
-
 
     def refresh(self):
         self.stdscr.refresh()

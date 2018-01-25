@@ -21,7 +21,7 @@ class DGSD_Menu(DGSD_Sprite):
         keys = menuMap.keys
         self.menuMap = menuMap
         mesh = '\n' + '\n'.join(keys) + '\n'
-        super(DGSD_Menu, self).__init__(DGSD_Mesh(mesh), pos, colorId)
+        super(DGSD_Menu, self).__init__(DGSD_Mesh(mesh), pos, colorId, True)
         self._keys = keys
         self._opt = 0
 

@@ -3,16 +3,17 @@ import heapq
 import threading
 
 from dgsd_renderer import DGSD_Renderer
-from dgsd_mesh import MeshMap, DGSD_Mesh
+from dgsd_mesh import DGSD_Mesh
 from dgsd_sprite import DGSD_Sprite
 from dgsd_scene import DGSD_Scene
-from dgsd_scene import SceneMap #TODO
 from dgsd_menu import DGSD_Menu, DGSD_MenuMap
-from dgsd_chat import ChatMap
 from dgsd_const import *
 
-import dgsd_mesh as dm
+from mesh_config import MeshMap
+from scene_config import SceneMap
+from chat_config import ChatMap
 
+import dgsd_mesh as dm
 
 class DGSD_Game:
     def __init__(self, width, height):
@@ -51,7 +52,7 @@ class DGSD_Game:
         self.addSprite(self.role, 5)
 
         for node in scene.item:
-            sprite = DGSD_Sprite(MeshMap[node['meshName']], node['pos'], node.get('colorId', 0))
+            sprite = DGSD_Sprite(MeshMap[node['meshName']], node['pos'], node.get('colorId', 0), node.get('bold', False))
             self.addSprite(sprite, node['zindex'], node['gridType'])
             if 'triggerType' in node and 'triggerItem' in node:
                 triggerObj = {'type': node['triggerType'], 'item': node['triggerItem']}
@@ -81,7 +82,8 @@ class DGSD_Game:
         for row in range(sprite.height):
             for col in range(sprite.width):
                 gridId = self.getGridId((col + sprite.x), (row + sprite.y))
-                self.map[gridId] = gridType 
+                if(gridType != MapGridType.FREE):
+                    self.map[gridId] = gridType 
 
     def clearScene(self):
         self.sprites = []
@@ -152,7 +154,7 @@ class DGSD_Game:
 
         if keyCode == MyKeyCode.ENTER:
             hasNext = self._activeChat.next()
-            self.log(list(self._activeChat.statusSet))
+            # self.log(list(self._activeChat.statusSet))
             if not hasNext:
                 self._mode = ControlMode.MOVE
 
@@ -161,7 +163,7 @@ class DGSD_Game:
         elif keyCode == MyKeyCode.S:
             self._activeChat.arrDown()
 
-        self.log(self._activeChat.opt)
+        # self.log(self._activeChat.opt)
             
 
     def showExitMenu(self):
@@ -231,7 +233,7 @@ class DGSD_Game:
 
 
 if __name__ == "__main__":
-    game = DGSD_Game(130, 40)
+    game = DGSD_Game(100, 40)
     try:
         game.start()
     finally:
