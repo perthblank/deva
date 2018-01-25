@@ -15,11 +15,11 @@ class DGSD_Scene:
 from dgsd_const import MapGridType, TriggerType, ColorId
 
 jiangnanMain = {
-    'rolePos': [20, 20],
+    'rolePos': [20, 16],
     'item': [
         {
             'meshName': 'npc',
-            'pos': [10, 10],
+            'pos': [25, 16],
             'zindex': 4,
             'colorId': ColorId.YELLOW,
             'gridType': MapGridType.BLOCK,
@@ -28,21 +28,21 @@ jiangnanMain = {
         },
         {
             'meshName': 'mountain',
-            'pos': [30, 10],
+            'pos': [20, 10],
             'zindex': 4,
             'colorId': ColorId.GREEN,
             'gridType': MapGridType.BLOCK,
         },
         {
             'meshName': 'mountain',
-            'pos': [40, 20],
+            'pos': [60, 10],
             'zindex': 4,
             'colorId': ColorId.GREEN,
             'gridType': MapGridType.BLOCK,
         },
         {
             'meshName': 'house',
-            'pos': [80, 10],
+            'pos': [35, 6],
             'zindex': 4,
             'colorId': ColorId.YELLOW,
             'gridType': MapGridType.BLOCK,

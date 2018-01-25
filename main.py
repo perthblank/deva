@@ -2,16 +2,17 @@ import time
 import heapq
 import threading
 
+from dgsd_renderer import DGSD_Renderer
 from dgsd_mesh import MeshMap, DGSD_Mesh
 from dgsd_sprite import DGSD_Sprite
 from dgsd_scene import DGSD_Scene
 from dgsd_scene import SceneMap #TODO
-from dgsd_renderer import DGSD_Renderer
-from dgsd_menu import DGSD_Menu, MenuMap
+from dgsd_menu import DGSD_Menu, DGSD_MenuMap
+from dgsd_chat import ChatMap
+from dgsd_const import *
 
 import dgsd_mesh as dm
 
-from dgsd_const import *
 
 class DGSD_Game:
     def __init__(self, width, height):
@@ -23,14 +24,14 @@ class DGSD_Game:
         self.printMsg = ''
         self.currentKey = ' '
 
-        self._exitMenuMap = MenuMap({
+        self._exitMenuMap = DGSD_MenuMap({
            SConst.BACK: self.resume,
            SConst.SAVE: self.save,
            SConst.EXIT: self.exit
         }, [SConst.BACK, SConst.SAVE, SConst.EXIT])
 
         self.loadScene(SceneMap['jiangnanMain'])
-        self._mode = ControlMode.GAME
+        self._mode = ControlMode.MOVE
         self._ok = True
 
     def start(self):
@@ -62,7 +63,7 @@ class DGSD_Game:
                     for row in range(sprite.height):
                         triggerPos += [(i + sprite.x, row + sprite.y) for i, c in enumerate(sprite.mesh[row])]
 
-                #self.printMsg = str(triggerPos)
+                #self.printMsg += str(triggerPos)
                 for t in triggerPos:
                     self.triggers[self.getGridId(t[0], t[1])] = triggerObj
 
@@ -87,12 +88,12 @@ class DGSD_Game:
         self.triggers = {}
         self.map = [MapGridType.FREE] * self.width * self.height
 
-    def handleControl(self, keyCode):
-        key = ''
-        if(keyCode < 255):
-            key = chr(keyCode)
-        if key in Directions:
-            x, y = (self.role.x + Directions[key][0], self.role.y + Directions[key][1])
+    def log(self, s):
+        self.renderer.log(str(s))
+
+    def handleMove(self, keyCode):
+        if keyCode in Directions:
+            x, y = (self.role.x + Directions[keyCode][0], self.role.y + Directions[keyCode][1])
             if x > 0 and x < self.width - self.role.width and y > 0 and y < self.height - self.role.height:
                 canStep = True
                 for col in range(self.role.width):
@@ -103,67 +104,88 @@ class DGSD_Game:
                     if not canStep:
                         break
 
+                #self.log(str((x, y)))
                 if canStep:
                     self.role.pos = (x, y)
                 else:
-                    triggerObj = self.getTrigger(x + RoleConst.HEAD_X, y + RoleConst.HEAD_Y)
-                    if triggerObj:
-                        if triggerObj['type'] == TriggerType.CHANGE_SCENE:
-                            #self.save()
-                            self.loadScene(SceneMap[triggerObj['item']])
+                    for offset in RoleConst.COLLIDE_OFFSETS:
+                        triggerObj = self.getTrigger(x + offset[0], y + offset[1])
+                        if triggerObj:
+                            if triggerObj['type'] == TriggerType.CHANGE_SCENE:
+                                #self.save()
+                                self.loadScene(SceneMap[triggerObj['item']])
+                            elif triggerObj['type'] == TriggerType.CHAT:
+                                self.showChat(ChatMap[triggerObj['item']])
+                            break
 
             self.role.touch()
-        if key == 't':
+        if keyCode == ord('t'):
             self.test()
 
     def test(self):
         #self.printMsg = 'test'
         pass
 
-    def showChatDialog(self):
-        self._showChatDialog = True
+    def showChat(self, chat):
+        self._mode = ControlMode.CHAT
+        self._activeChat = chat
 
     def handleUtil(self, keyCode):
-        # key = ''
-        # if(keyCode < 255):
-        #     key = chr(keyCode)
         if keyCode == MyKeyCode.ESC:
             self._mode = ControlMode.MENU
             self.showExitMenu()
 
     def handleMenu(self, keyCode):
-        key = ''
-        if(keyCode < 255):
-            key = chr(keyCode)
-        if key == 'w':
+
+        if keyCode == MyKeyCode.W:
             self._activeMenu.arrUp()
-        elif key == 's':
+        elif keyCode == MyKeyCode.S:
             self._activeMenu.arrDown()
+        elif keyCode == MyKeyCode.ENTER:
+            self._activeMenu.callCurrent()
+        elif keyCode == MyKeyCode.ESC:
+            self._mode = ControlMode.MOVE
+
+    def handleChat(self, keyCode):
+        # if keyCode == MyKeyCode.ESC:
+        #     self._mode = ControlMode.MOVE
+
 
         if keyCode == MyKeyCode.ENTER:
-            menuKey = self._activeMenu.currentKey()
-            self._exitMenuMap.call(menuKey)
+            hasNext = self._activeChat.next()
+            if not hasNext:
+                self._mode = ControlMode.MOVE
+
+        elif keyCode == MyKeyCode.W:
+            self._activeChat.arrUp()
+        elif keyCode == MyKeyCode.S:
+            self._activeChat.arrDown()
+
+        self.log(self._activeChat.opt)
+            
 
     def showExitMenu(self):
-        self._activeMenu = DGSD_Menu(self._exitMenuMap.keys, (MenuConst.X, MenuConst.Y))
+        self._activeMenu = DGSD_Menu(self._exitMenuMap, (MenuConst.X, MenuConst.Y))
 
     def handleKeys(self):
         while self._ok:
             keyCode = self.renderer.getch()
             self.currentKey = str(keyCode)
-            if(self._mode == ControlMode.GAME):
-                self.handleControl(keyCode)
+            if self._mode == ControlMode.MOVE:
+                self.handleMove(keyCode)
                 self.handleUtil(keyCode)
+            elif self._mode == ControlMode.CHAT:
+                self.handleChat(keyCode)
             else:
                 self.handleMenu(keyCode)
                 
-
     def resume(self):
-        self._mode = ControlMode.GAME
+        self._mode = ControlMode.MOVE
 
     def save(self):
         #TODO
-        self._mode = ControlMode.GAME
+        self.log('save\n')
+        self._mode = ControlMode.MOVE
 
     def exit(self):
         self._ok = False
@@ -186,6 +208,10 @@ class DGSD_Game:
                         self.renderer.addstr(row, col, str(self.map[self.getGridId(col, row)]))
                 self.renderer.renderSprite(self.role)
 
+            if self._mode == ControlMode.CHAT:
+                self.renderer.renderChat(self._activeChat)
+                pass
+
             if self._mode == ControlMode.MENU:
                 self.renderer.renderMenu(self._activeMenu)
 
@@ -197,12 +223,14 @@ class DGSD_Game:
                 time0 = time1
 
             self.renderer.addstr(0, 20, 'fps:' + str(lastFps))
-            self.renderer.addstr(self.height - 1, 20, self.printMsg)
+
+            #self.renderer.addstr(self.height - 1, 20, self.printMsg)
+            self.renderer.printLog()
+
             self.renderer.refresh()
 
 
 if __name__ == "__main__":
-
     game = DGSD_Game(130, 40)
     try:
         game.start()

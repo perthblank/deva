@@ -1,8 +1,8 @@
 class MoveKey:
-    UP = 'w'
-    DOWN = 's'
-    LEFT = 'a'
-    RIGHT = 'd'
+    UP      = ord('w')
+    DOWN    = ord('s')
+    LEFT    = ord('a')
+    RIGHT   = ord('d')
 
 Directions = {
     MoveKey.UP: [0, -1],
@@ -14,15 +14,15 @@ Directions = {
 class MyKeyCode:
     ENTER = 10
     ESC = 27
+    W = ord('w')
+    S = ord('s')
 
 class MenuConst:
     X = 3
     Y = 1
-    X_ARR = 1
 
 class RoleConst:
-    HEAD_X = 1
-    HEAD_Y = 0
+    COLLIDE_OFFSETS = [(1, 0), (0, 1), (2, 1), (1, 2)]
 
 class SConst:
     BACK = 'Back'
@@ -30,8 +30,9 @@ class SConst:
     EXIT = 'Exit'
 
 class ControlMode:
-    GAME = 1
+    MOVE = 1
     MENU = 2
+    CHAT = 3
 
 class MapGridType:
     FREE = '_'
@@ -47,3 +48,12 @@ class ColorId:
 
 
 TRIGGER_CHAR = '#'
+
+class ChatTextType:
+    STATEMENT = 1
+    BRANCH = 2
+
+class ChatBoxConst:
+    X = 4
+
+

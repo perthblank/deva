@@ -1,7 +1,7 @@
 from dgsd_sprite import DGSD_Sprite
 from dgsd_mesh import DGSD_Mesh
 
-class MenuMap():
+class DGSD_MenuMap():
     def __init__(self, keyMap, keyOrder = None):
         if keyOrder is None:
             keyOrder = list(keyMap.keys())
@@ -17,11 +17,16 @@ class MenuMap():
 
 
 class DGSD_Menu(DGSD_Sprite):
-    def __init__(self, keys, pos, colorId = 0):
+    def __init__(self, menuMap, pos, colorId = 0):
+        keys = menuMap.keys
+        self.menuMap = menuMap
         mesh = '\n' + '\n'.join(keys) + '\n'
         super(DGSD_Menu, self).__init__(DGSD_Mesh(mesh), pos, colorId)
         self._keys = keys
         self._opt = 0
+
+    def callCurrent(self):
+        self.menuMap.call(self.currentKey())
 
     def currentKey(self):
         return self._keys[self.opt]
