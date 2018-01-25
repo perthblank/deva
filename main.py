@@ -112,7 +112,6 @@ class DGSD_Game:
                         triggerObj = self.getTrigger(x + offset[0], y + offset[1])
                         if triggerObj:
                             if triggerObj['type'] == TriggerType.CHANGE_SCENE:
-                                #self.save()
                                 self.loadScene(SceneMap[triggerObj['item']])
                             elif triggerObj['type'] == TriggerType.CHAT:
                                 self.showChat(ChatMap[triggerObj['item']])
@@ -153,6 +152,7 @@ class DGSD_Game:
 
         if keyCode == MyKeyCode.ENTER:
             hasNext = self._activeChat.next()
+            self.log(list(self._activeChat.statusSet))
             if not hasNext:
                 self._mode = ControlMode.MOVE
 
