@@ -14,7 +14,6 @@ _role = [
  " 
 """]
 
-
 role = DGSD_Mesh(_role, MeshType.ANIMATE)
 
 _npc = [
