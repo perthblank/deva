@@ -9,9 +9,9 @@ from dgsd_scene import DGSD_Scene
 from dgsd_menu import DGSD_Menu, DGSD_MenuMap
 from dgsd_const import *
 
-from mesh_config import MeshMap
-from scene_config import SceneMap
-from chat_config import ChatMap
+from config_mesh import MeshMap
+from config_chat import ChatMap
+from config_scene import SceneMap
 
 import dgsd_mesh as dm
 
