@@ -255,9 +255,11 @@ class DGSD_Game:
 
 
 if __name__ == "__main__":
-    game = DGSD_Game(40, 30)
+    game = DGSD_Game(40,30)
     try:
         game.start()
+    except:
+        print('Error')
     finally:
         pass
 

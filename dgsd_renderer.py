@@ -10,6 +10,11 @@ class DGSD_Renderer:
         curses.noecho()
         curses.cbreak()
         curses.start_color()
+        
+        if not curses.has_colors():
+            print('Your terminal do not support curses colors, DGSD refuse to run for now')
+            exit(1)
+
         for color in dcolor.COLORS:
             curses.init_pair(color.id, color.front, color.back)
 
