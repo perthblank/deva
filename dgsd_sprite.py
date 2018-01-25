@@ -2,7 +2,7 @@ from dgsd_const import MeshType
 import random
 
 class DGSD_Sprite:
-    def __init__(self, mesh, pos, colorId = 0, bold = False):
+    def __init__(self, mesh, pos, zindex, colorId = 0, bold = False):
         if isinstance(mesh.mesh, list):
             self.meshList = [m.split('\n')[1:-1] for m in mesh.mesh]
             self.meshListType = mesh.meshType
@@ -24,6 +24,7 @@ class DGSD_Sprite:
         self._width = len(self.meshList[0][0])
 
         self._bold = bold
+        self._zindex = zindex
 
         self.meshListAnimateNum = 0
         self.meshListSize = len(self.meshList)
@@ -33,7 +34,12 @@ class DGSD_Sprite:
             print("\r" + line)
 
     def touch(self):
-        if(self.meshListType == MeshType.ANIMATE):
+        if self.meshListType == MeshType.ANIMATE_ON_TOUCH:
+            index = (self.meshListAnimateNum + 1) % self.meshListSize
+            self.meshListAnimateNum = index
+
+    def animate(self):
+        if self.meshListType == MeshType.ANIMATE_AUTO:
             index = (self.meshListAnimateNum + 1) % self.meshListSize
             self.meshListAnimateNum = index
 
@@ -81,6 +87,10 @@ class DGSD_Sprite:
     @property
     def bold(self):
         return self._bold
+
+    @property
+    def zindex(self):
+        return self._zindex
 
     def __lt__(self, other):
         # dont care the order

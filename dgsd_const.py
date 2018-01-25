@@ -14,7 +14,8 @@ Directions = {
 class MeshType:
     STATIC = 1
     RANDOM = 2
-    ANIMATE = 3
+    ANIMATE_ON_TOUCH = 3
+    ANIMATE_AUTO = 4
 
 class MyKeyCode:
     ENTER = 10
@@ -46,6 +47,7 @@ class MapGridType:
 class TriggerType:
     CHANGE_SCENE = 1
     CHAT = 2
+    PICK_UP = 3
 
 class ColorId:
     YELLOW  = 1
@@ -57,6 +59,8 @@ class ColorId:
 
 
 TRIGGER_CHAR = '#'
+
+ROLE_ZINDEX = 5
 
 class ChatTextType:
     STATEMENT = 1

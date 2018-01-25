@@ -14,12 +14,20 @@ python3 main.py
 ```
 Keys: `w`, `a`, `s`, `d`, `Esc`, `Enter`
 
+Or in python code
+```python
+from dgsd_game import DGSD_Game 
+game = DGSD_Game(viewportWidth, viewportHeight)
+game.start()
+```
+
 
 ### Make a game
 This project provides the following RPG factors to config:
 - mesh
 - scene
 - chat
+- viewport
 
 next
 - inventory
@@ -29,9 +37,10 @@ next
 #### Mesh
 Refer `config_mesh.py`
 
-A mesh is a character layout. Any item in the scene is a mesh. There're three types of mesh supported:
+A mesh is a character layout. Any node in the scene is a mesh. There're three types of mesh supported:
 - `MeshType.STATIC`: a static mesh (eg. `house`)
-- `MeshType.ANIMATE`: an animating mesh, the mesh will play next frame on each mesh (eg. `role`)
+- `MeshType.ANIMATE_ON_TOUCH`: an animating mesh, the mesh will play next frame when player touch move key (eg. `role`)
+- `MeshType.ANIMATE_AUTO`: an auto animating mesh, the mesh will play next frame each 1 sec (eg. `river`)
 - `MeshType.RANDOM`: the game will randomly load one frame from the given mesh list when starts (eg, `rock`)
 
 Example:
@@ -50,7 +59,7 @@ _role = [
 """]
 
 # renderer will loop the two frames in cycle
-role = DGSD_Mesh(_role, MeshType.ANIMATE)
+role = DGSD_Mesh(_role, MeshType.ANIMATE_ON_TOUCH)
 
 
 _temple = [
@@ -77,14 +86,17 @@ temple = DGSD_Mesh(_temple)
 #### Scene
 Refer `config_scene.py`
 
-A scene is defined as the starting place of role and all other mesh items.
+A scene is defined as the starting place of role and all other mesh nodes.
 ```
 scene = {
-  'rolePos': [x, y]
-  'items': [...mesh_items]
+  'rolePos': [x, y],
+  'dimension': [width, height],
+  'nodes': [...mesh_nodes]
 }
 ```
-Each mesh item has following attribute:
+`dimension` tells the width and height of the scene. If the dimension is larger than viewport, then the camera  will render a part of the scene, like a normal RPG. Otherwise, the whole scene will be rendered.
+
+Each mesh node has following attribute:
 - `meshName`: defined name in MeshMap in mesh config
 - `pos`: mesh position
 - `zindex`: higher value ones will cover lower ones
@@ -97,15 +109,15 @@ Each mesh item has following attribute:
 #### Chat
 Refer `config_chat.py`
 
-A chat is defined as a list of chat items. Each chat item has  following attribute:
-- `id`: index of the item
+A chat is defined as a list of chat nodes. Each chat node has  following attribute:
+- `id`: index of the node
 - `title`: text of current chat box
 - `type`: constant from `ChatTextType.STATEMENT, ChatTextType.BRANCH`, where `branch` means current chat box contains a choice question, come with the attribute `branch`, `branch_to`
 - `branch`: a list of choices
 - `branch_to`: a list index of the corresponding choice should jump to. Should have equal length with `branch`
-- `status_code`(*optional*): a status that current chat item will trigger
-- `exclude_status`: status that if triggered by previous chat items, this item will not be shown anymore
-- `prereq_status`: status that needed to be triggered to show this item
+- `status_code`(*optional*): a status that current chat node will trigger
+- `exclude_status`: status that if triggered by previous chat nodes, this node will not be shown anymore
+- `prereq_status`: status that needed to be triggered to show this node
 
 
 I create this project in memory to my favourite PC game ever.

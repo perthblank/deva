@@ -21,6 +21,8 @@ class DGSD_Renderer:
 
         self.logList = []
 
+        self._cameraPos = (0, 0)
+
     def __del__(self):
         curses.echo()
         curses.nocbreak()
@@ -38,19 +40,23 @@ class DGSD_Renderer:
                 self.stdscr.addstr(lineNum, 0, '|')
                 self.stdscr.addstr(lineNum, self.width-1, '|')
 
-    def renderSprite(self, sprite):
-        for row in range(sprite.height):
-            meshRow = sprite.mesh[row]
+    def renderSprite(self, sprite, viewport = True):
+        for indRow in range(sprite.height):
+            meshRow = sprite.mesh[indRow]
             attr = curses.color_pair(sprite.colorId)
             if sprite.bold:
                 attr |= curses.A_BOLD
-            self.stdscr.addstr(sprite.y + row, sprite.x, meshRow, attr)
+            for indCol in range(len(meshRow)):
+                y = sprite.y + indRow - (self.cameraY if viewport else 0)
+                x = sprite.x + indCol - (self.cameraX if viewport else 0)
+                if(y>=1 and y < self.height - 1 and x >=1 and x < self.width - 1):
+                    self.stdscr.addstr(y, x, meshRow[indCol], attr)
 
     def renderMenu(self, menu):
         self._menuArr.x = menu.x - 2
         self._menuArr.y = menu.y + menu.opt
-        self.renderSprite(self._menuArr)
-        self.renderSprite(menu)
+        self.renderSprite(self._menuArr, False)
+        self.renderSprite(menu, False)
 
     def renderChat(self, chat):
         textItem = chat.currentTextItem
@@ -82,4 +88,28 @@ class DGSD_Renderer:
     def printLog(self):
         for i in range(len(self.logList)):
             self.stdscr.addstr(self.height + 1 + i, 0, self.logList[i])
+
+    @property
+    def cameraPos(self):
+        return self._cameraPos
+
+    @cameraPos.setter
+    def cameraPos(self, pos):
+        self._cameraPos = pos
+
+    @property
+    def cameraX(self):
+        return self._cameraPos[0]
+
+    @cameraX.setter
+    def cameraX(self, x):
+        self._cameraPos = (x, self._cameraPos[1])
+
+    @property
+    def cameraY(self):
+        return self._cameraPos[1]
+
+    @cameraY.setter
+    def cameraY(self, y):
+        self._cameraPos = (self._cameraPos[0], y)
 

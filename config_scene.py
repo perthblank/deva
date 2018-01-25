@@ -1,8 +1,9 @@
 from dgsd_const import MapGridType, TriggerType, ColorId
 
-jiangnanMain = {
+main = {
     'rolePos': [20, 16],
-    'item': [
+    'dimension': [95, 35],
+    'nodes': [
         {
             'meshName': 'npc',
             'pos': [25, 16],
@@ -40,6 +41,15 @@ jiangnanMain = {
             'bold': True,
         },
         {
+            'meshName': 'box',
+            'pos': [30,6],
+            'zindex': 5,
+            'colorId': ColorId.YELLOW,
+            'gridType': MapGridType.BLOCK,
+            'triggerType': TriggerType.CHANGE_SCENE,
+
+        },
+        {
             'meshName': 'grass',
             'pos': [5, 5],
             'zindex': 0,
@@ -49,7 +59,7 @@ jiangnanMain = {
         {
             'meshName': 'river',
             'pos': [5, 26],
-            'zindex': 4,
+            'zindex': 3,
             'colorId': ColorId.BLUE,
             'gridType': MapGridType.FREE,
             'bold': True,
@@ -59,16 +69,17 @@ jiangnanMain = {
 }
 
 guilinMain = {
-    'rolePos': [40, 20],
-    'item': [
+    'rolePos': [10, 20],
+    'dimension': [80, 80],
+    'nodes': [
         {
             'meshName': 'temple',
-            'pos': [35, 6],
+            'pos': [15, 6],
             'zindex': 4,
             'colorId': ColorId.RED,
             'gridType': MapGridType.BLOCK,
             'triggerType': TriggerType.CHANGE_SCENE,
-            'triggerItem': 'jiangnanMain',
+            'triggerItem': 'main',
             'bold': True
         },
         {
@@ -89,7 +100,7 @@ guilinMain = {
 }
 
 SceneMap = {
-        'jiangnanMain': jiangnanMain,
+        'main': main,
         'guilinMain': guilinMain,
         }
 

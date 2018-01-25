@@ -1,5 +1,4 @@
 import time
-import heapq
 import threading
 
 from dgsd_renderer import DGSD_Renderer
@@ -13,12 +12,14 @@ from config_mesh import MeshMap
 from config_chat import ChatMap
 from config_scene import SceneMap
 
+from util import *
+
 import dgsd_mesh as dm
 
 class DGSD_Game:
     def __init__(self, width, height):
-        self.width = width
-        self.height = height
+        self.viewWidth = width
+        self.viewHeight = height
 
         self.renderer = DGSD_Renderer(width, height)
 
@@ -31,29 +32,42 @@ class DGSD_Game:
            SConst.EXIT: self.exit
         }, [SConst.BACK, SConst.SAVE, SConst.EXIT])
 
-        self.loadScene(SceneMap['jiangnanMain'])
+        self.loadScene(SceneMap['main'])
         self._mode = ControlMode.MOVE
         self._ok = True
 
     def start(self):
         handleThread = threading.Thread(target=self.handleKeys)
         renderThread = threading.Thread(target=self.render)
+        animateThread = threading.Thread(target=self.animate)
 
         handleThread.start()
         renderThread.start()
+        animateThread.start()
         handleThread.join()
         renderThread.join()
+        animateThread.join()
+
+    def animate(self):
+        while self._ok:
+            for s in self.sprites:
+                s.animate()
+            time.sleep(1)
 
     def loadScene(self, sceneConfig):
         self.clearScene()
         scene = DGSD_Scene(sceneConfig)
+        self.grids = [MapGridType.FREE] * scene.width * scene.height
+        self._activeScene = scene
 
-        self.role = DGSD_Sprite(MeshMap['role'], scene.rolePos)
-        self.addSprite(self.role, 5)
+        self.renderer.cameraPos = (max(0, scene.rolePos[0]-int(self.viewWidth/2)), max(0, scene.rolePos[1]-int(self.viewHeight/2)))
 
-        for node in scene.item:
-            sprite = DGSD_Sprite(MeshMap[node['meshName']], node['pos'], node.get('colorId', 0), node.get('bold', False))
-            self.addSprite(sprite, node['zindex'], node['gridType'])
+        self.role = DGSD_Sprite(MeshMap['role'], scene.rolePos, ROLE_ZINDEX)
+        self.addSprite(self.role)
+
+        for node in scene.meshNodes:
+            sprite = DGSD_Sprite(MeshMap[node['meshName']], node['pos'], node['zindex'], node.get('colorId', 0), node.get('bold', False))
+            self.addSprite(sprite, node['gridType'])
             if 'triggerType' in node and 'triggerItem' in node:
                 triggerObj = {'type': node['triggerType'], 'item': node['triggerItem']}
                 triggerPos = []
@@ -69,26 +83,30 @@ class DGSD_Game:
                     self.triggers[self.getGridId(t[0], t[1])] = triggerObj
 
     def getGridId(self, x, y):
-        return x * self.height + y
+        return x * self._activeScene.height + y
 
     def isFreeGrid(self, x, y):
-        return self.map[self.getGridId(x, y)] == MapGridType.FREE
+        return self.grids[self.getGridId(x, y)] == MapGridType.FREE
 
     def getTrigger(self, x, y):
         return self.triggers.get(self.getGridId(x, y), None)
 
-    def addSprite(self, sprite, priority, gridType = MapGridType.FREE):
-        heapq.heappush(self.sprites, (priority, sprite))
+    def addSprite(self, sprite, gridType = MapGridType.FREE):
+        self.sprites.append(sprite)
+        self.sprites = sorted(self.sprites, key = lambda a: a.zindex)
+
         for row in range(sprite.height):
             for col in range(sprite.width):
-                gridId = self.getGridId((col + sprite.x), (row + sprite.y))
-                if(gridType != MapGridType.FREE):
-                    self.map[gridId] = gridType 
+                x = col + sprite.x
+                y = row + sprite.y
+                if x < self._activeScene.width and y < self._activeScene.height:
+                    gridId = self.getGridId((col + sprite.x), (row + sprite.y))
+                    if(gridType != MapGridType.FREE):
+                        self.grids[gridId] = gridType 
 
     def clearScene(self):
         self.sprites = []
         self.triggers = {}
-        self.map = [MapGridType.FREE] * self.width * self.height
 
     def log(self, s):
         self.renderer.log(str(s))
@@ -96,7 +114,7 @@ class DGSD_Game:
     def handleMove(self, keyCode):
         if keyCode in Directions:
             x, y = (self.role.x + Directions[keyCode][0], self.role.y + Directions[keyCode][1])
-            if x > 0 and x < self.width - self.role.width and y > 0 and y < self.height - self.role.height:
+            if x > 0 and x < self._activeScene.width - self.role.width and y > 0 and y < self._activeScene.height - self.role.height:
                 canStep = True
                 for col in range(self.role.width):
                     for row in range(self.role.height):
@@ -106,9 +124,18 @@ class DGSD_Game:
                     if not canStep:
                         break
 
-                #self.log(str((x, y)))
                 if canStep:
                     self.role.pos = (x, y)
+                    cameraNewX = self.renderer.cameraX + Directions[keyCode][0]
+                    if cameraNewX >=0 and cameraNewX + self.viewWidth < self._activeScene.width:
+                        self.renderer.cameraX = cameraNewX
+
+                    cameraNewY = self.renderer.cameraY + Directions[keyCode][1]
+                    if cameraNewY >=0 and cameraNewY + self.viewHeight < self._activeScene.height:
+                        self.renderer.cameraY = cameraNewY
+
+                    # self.log(self.renderer.cameraPos)
+
                 else:
                     for offset in RoleConst.COLLIDE_OFFSETS:
                         triggerObj = self.getTrigger(x + offset[0], y + offset[1])
@@ -119,7 +146,9 @@ class DGSD_Game:
                                 self.showChat(ChatMap[triggerObj['item']])
                             break
 
-            self.role.touch()
+            for s in self.sprites:
+                s.touch()
+
         if keyCode == ord('t'):
             self.test()
 
@@ -151,7 +180,6 @@ class DGSD_Game:
         # if keyCode == MyKeyCode.ESC:
         #     self._mode = ControlMode.MOVE
 
-
         if keyCode == MyKeyCode.ENTER:
             hasNext = self._activeChat.next()
             # self.log(list(self._activeChat.statusSet))
@@ -172,6 +200,8 @@ class DGSD_Game:
     def handleKeys(self):
         while self._ok:
             keyCode = self.renderer.getch()
+
+
             self.currentKey = str(keyCode)
             if self._mode == ControlMode.MOVE:
                 self.handleMove(keyCode)
@@ -200,15 +230,7 @@ class DGSD_Game:
             self.renderer.renderBorder()
             self.renderer.addstr(0, 0, self.currentKey)
             for s in self.sprites:
-                sprite = s[1]
-                self.renderer.renderSprite(sprite)
-
-            mapDebug = False
-            if mapDebug:
-                for row in range(1, self.height -1):
-                    for col in range(1, self.width -1):
-                        self.renderer.addstr(row, col, str(self.map[self.getGridId(col, row)]))
-                self.renderer.renderSprite(self.role)
+                self.renderer.renderSprite(s)
 
             if self._mode == ControlMode.CHAT:
                 self.renderer.renderChat(self._activeChat)
@@ -226,14 +248,14 @@ class DGSD_Game:
 
             self.renderer.addstr(0, 20, 'fps:' + str(lastFps))
 
-            #self.renderer.addstr(self.height - 1, 20, self.printMsg)
+            #self.renderer.addstr(self.viewHeight - 1, 20, self.printMsg)
             self.renderer.printLog()
 
             self.renderer.refresh()
 
 
 if __name__ == "__main__":
-    game = DGSD_Game(100, 40)
+    game = DGSD_Game(70, 30)
     try:
         game.start()
     finally:
