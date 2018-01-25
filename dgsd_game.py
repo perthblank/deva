@@ -8,21 +8,20 @@ from dgsd_scene import DGSD_Scene
 from dgsd_menu import DGSD_Menu, DGSD_MenuMap
 from dgsd_const import *
 
-from config_mesh import MeshMap
-from config_chat import ChatMap
-from config_scene import SceneMap
-from config_item import ItemMap
-
 from util import *
 
 import dgsd_mesh as dm
 
 class DGSD_Game:
-    def __init__(self, width, height):
-        self.viewWidth = width
-        self.viewHeight = height
+    def __init__(self, dim, meshMap, sceneMap, chatMap, itemMap):
+        self.viewWidth = dim[0]
+        self.viewHeight = dim[1]
+        self.meshMap = meshMap
+        self.sceneMap = sceneMap
+        self.chatMap = chatMap
+        self.itemMap = itemMap
 
-        self.renderer = DGSD_Renderer(width, height)
+        self.renderer = DGSD_Renderer(dim[0], dim[1])
 
         self.printMsg = ''
         self.currentKey = ' '
@@ -65,11 +64,11 @@ class DGSD_Game:
 
         self.renderer.cameraPos = (max(0, scene.rolePos[0]-int(self.viewWidth/2)), max(0, scene.rolePos[1]-int(self.viewHeight/2)))
 
-        self.role = DGSD_Sprite(MeshMap['role'], scene.rolePos, ROLE_ZINDEX)
+        self.role = DGSD_Sprite(self.meshMap['role'], scene.rolePos, ROLE_ZINDEX)
         self.addSprite(self.role)
 
         for node in scene.meshNodes:
-            sprite = DGSD_Sprite(MeshMap[node['meshName']], node['pos'], node['zindex'], node.get('colorId', 0), node.get('bold', False))
+            sprite = DGSD_Sprite(self.meshMap[node['meshName']], node['pos'], node['zindex'], node.get('colorId', 0), node.get('bold', False))
             self.addSprite(sprite, node['gridType'])
             if 'triggerType' in node and 'triggerItem' in node:
                 triggerObj = {'type': node['triggerType'], 'item': node['triggerItem'], 'spriteId': id(sprite)}
@@ -146,11 +145,11 @@ class DGSD_Game:
                         triggerObj = self.getTrigger(x + offset[0], y + offset[1])
                         if triggerObj:
                             if triggerObj['type'] == TriggerType.CHANGE_SCENE:
-                                self.loadScene(SceneMap[triggerObj['item']])
+                                self.loadScene(self.sceneMap[triggerObj['item']])
                             elif triggerObj['type'] == TriggerType.CHAT:
-                                self.showChat(ChatMap[triggerObj['item']])
+                                self.showChat(self.chatMap[triggerObj['item']])
                             elif triggerObj['type'] == TriggerType.ITEM:
-                                self.pickItem(ItemMap[triggerObj['item']], triggerObj['spriteId'])
+                                self.pickItem(self.itemMap[triggerObj['item']], triggerObj['spriteId'])
                                 self.grids[self.getGridId(x + offset[0], y + offset[1])] = MapGridType.FREE
                             break
 
@@ -272,8 +271,13 @@ class DGSD_Game:
             self.renderer.refresh()
 
 
+from config_mesh import MeshMap
+from config_chat import ChatMap
+from config_scene import SceneMap
+from config_item import ItemMap
+
 if __name__ == "__main__":
-    game = DGSD_Game(80,30)
+    game = DGSD_Game((80,30), MeshMap, ChatMap, SceneMap, ItemMap)
     try:
         game.start()
     except:

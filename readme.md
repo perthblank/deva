@@ -9,16 +9,22 @@ Enjoy an RPG, in terminal.
 Text-image rendered by `curses` in python.
 
 ### Get started
+```python
+from config_mesh import MeshMap
+from config_chat import ChatMap
+from config_scene import SceneMap
+from config_item import ItemMap
+
+from dgsd_game import DGSD_Game 
+
+game = DGSD_Game((viewportW,viewportH), MeshMap, ChatMap, SceneMap, ItemMap)
+game.start()
+```
+or run
 ```
 python3 dgsd_game.py
 ```
-
-Or in python code
-```python
-from dgsd_game import DGSD_Game 
-game = DGSD_Game(viewportWidth, viewportHeight)
-game.start()
-```
+for demo
 
 Keys: `w`, `a`, `s`, `d`, `Esc`, `Enter`
 
