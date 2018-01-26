@@ -162,7 +162,6 @@ A smaller viewport will render a part of the scene, and the camera will follow t
 ```
 When the viewport is larger or equal than the scene dimension, the whole scene will be displayed
 
-### acknowledgement
-I create this project in memory to my favourite PC game ever.
+### Acknowledgement
 ![TianLong](img/tianlongbabu.jpg)
 
