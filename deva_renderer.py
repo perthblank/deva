@@ -1,10 +1,10 @@
 import curses
-import dgsd_color as dcolor
-from dgsd_sprite import DGSD_Sprite
-from dgsd_mesh import DGSD_Mesh
-from dgsd_const import ColorId, ChatTextType
+import deva_color as dcolor
+from deva_sprite import Deva_Sprite
+from deva_mesh import Deva_Mesh
+from deva_const import ColorId, ChatTextType
 
-class DGSD_Renderer:
+class Deva_Renderer:
     def __init__(self, width, height):
         self.stdscr = curses.initscr()
         curses.noecho()
@@ -12,7 +12,7 @@ class DGSD_Renderer:
         curses.start_color()
         
         if not curses.has_colors():
-            print('Your terminal do not support curses colors, DGSD refuse to run for now')
+            print('Your terminal do not support curses colors, Deva refuse to run for now')
             exit(1)
 
         for color in dcolor.COLORS:
@@ -22,7 +22,7 @@ class DGSD_Renderer:
         self.height = height
 
         # create an arrow >
-        self._menuArr = DGSD_Sprite(DGSD_Mesh(['\n>\n']), (0, 0), ColorId.YELLOW) 
+        self._menuArr = Deva_Sprite(Deva_Mesh(['\n>\n']), (0, 0), ColorId.YELLOW) 
 
         self.logList = []
 

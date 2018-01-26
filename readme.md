@@ -1,8 +1,10 @@
-# DGSD
-## the Demi-Gods and the Semi-Devils (天龙八部)
+# Deva (天众)
 Enjoy an RPG, in terminal.
 
-### What is DGSD
+> A *deva* (देव Sanskrit and Pāli, Mongolian tenger (тэнгэр)) in Buddhism is one of many different types of non-human beings who share the godlike characteristics of being more powerful, longer-lived, and, in general, much happier than humans, although the same level of veneration is not paid to them as to buddhas. 
+
+
+### What is Deva
 - A terminal RPG
 - A terminal RPG maker by writing config files
 
@@ -15,14 +17,20 @@ from config_chat import ChatMap
 from config_scene import SceneMap
 from config_item import ItemMap
 
-from dgsd_game import DGSD_Game 
+from deva_game import Deva_Game 
 
-game = DGSD_Game((viewportW,viewportH), MeshMap, ChatMap, SceneMap, ItemMap)
+game = Deva_Game(
+  (80,30), 
+  meshMap = MeshMap, 
+  chatMap = ChatMap, 
+  sceneMap = SceneMap, 
+  itemMap = ItemMap
+)
 game.start()
 ```
 or run
 ```
-python3 dgsd_game.py
+python3 deva_game.py
 ```
 for demo
 
@@ -65,7 +73,7 @@ _role = [
 """]
 
 # renderer will loop the two frames in cycle
-role = DGSD_Mesh(_role, MeshType.ANIMATE_ON_TOUCH)
+role = Deva_Mesh(_role, MeshType.ANIMATE_ON_TOUCH)
 
 
 _temple = [
@@ -86,7 +94,7 @@ _temple = [
 
 # a static mesh, and the `#` on the edge will be recognized as trigger point
 # if this mesh is configed as trigger `CHANGE_SCENE` in scene config
-temple = DGSD_Mesh(_temple)
+temple = Deva_Mesh(_temple)
 ```
 
 #### Scene

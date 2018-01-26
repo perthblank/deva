@@ -1,5 +1,5 @@
-from dgsd_mesh import DGSD_Mesh
-from dgsd_const import MeshType
+from deva_mesh import Deva_Mesh
+from deva_const import MeshType
 
 # put the quotes in single lines
 _role = [
@@ -14,7 +14,7 @@ _role = [
  " 
 """]
 
-role = DGSD_Mesh(_role, MeshType.ANIMATE_ON_TOUCH)
+role = Deva_Mesh(_role, MeshType.ANIMATE_ON_TOUCH)
 
 _npc = [
 """
@@ -24,7 +24,7 @@ _npc = [
 """
 ]
 
-npc = DGSD_Mesh(_npc)
+npc = Deva_Mesh(_npc)
 
 #4x9
 _rock = [
@@ -48,7 +48,7 @@ s   `s/--
 """
 ]
 
-rock = DGSD_Mesh(_rock, MeshType.RANDOM)
+rock = Deva_Mesh(_rock, MeshType.RANDOM)
 
 _house = [
 """
@@ -63,7 +63,7 @@ y     y   |    -+
 """
 ]
 
-house = DGSD_Mesh(_house, MeshType.STATIC)
+house = Deva_Mesh(_house, MeshType.STATIC)
 
 
 _river = [
@@ -97,7 +97,7 @@ _river = [
 
 ]
 
-river = DGSD_Mesh(_river, MeshType.ANIMATE_AUTO)
+river = Deva_Mesh(_river, MeshType.ANIMATE_AUTO)
 
 _grass = [
 """
@@ -114,7 +114,7 @@ _grass = [
 """
 ]
 
-grass = DGSD_Mesh(_grass)
+grass = Deva_Mesh(_grass)
 
 _temple = [
 """
@@ -132,7 +132,7 @@ _temple = [
 """
 ]
 
-temple = DGSD_Mesh(_temple)
+temple = Deva_Mesh(_temple)
 
 _box = [
 """
@@ -143,7 +143,7 @@ o
 """
 ]
 
-box = DGSD_Mesh(_box, MeshType.ANIMATE_AUTO)
+box = Deva_Mesh(_box, MeshType.ANIMATE_AUTO)
 
 MeshMap = {
         'rock': rock,

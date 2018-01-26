@@ -1,4 +1,4 @@
-class DGSD_Scene:
+class Deva_Scene:
     def __init__(self, sceneConfig):
         self._rolePos = sceneConfig['rolePos']
         self._item = sceneConfig['nodes']

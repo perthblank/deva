@@ -1,7 +1,7 @@
-from dgsd_const import ChatTextType, ChatBoxConst
-from dgsd_menu import DGSD_Menu, DGSD_MenuMap
+from deva_const import ChatTextType, ChatBoxConst
+from deva_menu import Deva_Menu, Deva_MenuMap
 
-class DGSD_Chat:
+class Deva_Chat:
     def __init__(self, chatlist):
         self.chatMap = {}
         for chat in chatlist:
@@ -57,7 +57,7 @@ class DGSD_Chat:
                     for i in range(len(textItem['branch'])):
                         mmap[textItem['branch'][i]] = self.jumpTo(textItem['branch_to'][i])
 
-                    self._activeMenu = DGSD_Menu(DGSD_MenuMap(mmap), (ChatBoxConst.X, 0))
+                    self._activeMenu = Deva_Menu(Deva_MenuMap(mmap), (ChatBoxConst.X, 0))
                 return True
             self.reset()
             return None

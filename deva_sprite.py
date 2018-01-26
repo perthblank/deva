@@ -1,7 +1,7 @@
-from dgsd_const import MeshType 
+from deva_const import MeshType 
 import random
 
-class DGSD_Sprite:
+class Deva_Sprite:
     def __init__(self, mesh, pos, zindex, colorId = 0, bold = False):
         if isinstance(mesh.mesh, list):
             self.meshList = [m.split('\n')[1:-1] for m in mesh.mesh]

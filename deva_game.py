@@ -1,38 +1,38 @@
 import time
 import threading
 
-from dgsd_renderer import DGSD_Renderer
-from dgsd_mesh import DGSD_Mesh
-from dgsd_sprite import DGSD_Sprite
-from dgsd_scene import DGSD_Scene
-from dgsd_menu import DGSD_Menu, DGSD_MenuMap
-from dgsd_const import *
+from deva_renderer import Deva_Renderer
+from deva_mesh import Deva_Mesh
+from deva_sprite import Deva_Sprite
+from deva_scene import Deva_Scene
+from deva_menu import Deva_Menu, Deva_MenuMap
+from deva_const import *
 
 from util import *
 
-import dgsd_mesh as dm
+import deva_mesh as dm
 
-class DGSD_Game:
-    def __init__(self, dim, meshMap, sceneMap, chatMap, itemMap):
-        self.viewWidth = dim[0]
-        self.viewHeight = dim[1]
-        self.meshMap = meshMap
-        self.sceneMap = sceneMap
-        self.chatMap = chatMap
-        self.itemMap = itemMap
+class Deva_Game:
+    def __init__(self, **configs):
+        self.viewWidth  = configs['dim'][0]
+        self.viewHeight = configs['dim'][1]
+        self.meshMap  = configs['meshMap']
+        self.sceneMap = configs['sceneMap']
+        self.chatMap  = configs['chatMap']
+        self.itemMap  = configs['itemMap']
 
-        self.renderer = DGSD_Renderer(dim[0], dim[1])
+        self.renderer = Deva_Renderer(self.viewWidth, self.viewHeight)
 
         self.printMsg = ''
         self.currentKey = ' '
 
-        self._exitMenuMap = DGSD_MenuMap({
+        self._exitMenuMap = Deva_MenuMap({
            SConst.BACK: self.resume,
            SConst.SAVE: self.save,
            SConst.EXIT: self.exit
         }, [SConst.BACK, SConst.SAVE, SConst.EXIT])
 
-        self.loadScene(SceneMap['main'])
+        self.loadScene(self.sceneMap['main'])
         self._mode = ControlMode.MOVE
         self._ok = True
 
@@ -58,17 +58,17 @@ class DGSD_Game:
 
     def loadScene(self, sceneConfig):
         self.clearScene()
-        scene = DGSD_Scene(sceneConfig)
+        scene = Deva_Scene(sceneConfig)
         self.grids = [MapGridType.FREE] * scene.width * scene.height
         self._activeScene = scene
 
         self.renderer.cameraPos = (max(0, scene.rolePos[0]-int(self.viewWidth/2)), max(0, scene.rolePos[1]-int(self.viewHeight/2)))
 
-        self.role = DGSD_Sprite(self.meshMap['role'], scene.rolePos, ROLE_ZINDEX)
+        self.role = Deva_Sprite(self.meshMap['role'], scene.rolePos, ROLE_ZINDEX)
         self.addSprite(self.role)
 
         for node in scene.meshNodes:
-            sprite = DGSD_Sprite(self.meshMap[node['meshName']], node['pos'], node['zindex'], node.get('colorId', 0), node.get('bold', False))
+            sprite = Deva_Sprite(self.meshMap[node['meshName']], node['pos'], node['zindex'], node.get('colorId', 0), node.get('bold', False))
             self.addSprite(sprite, node['gridType'])
             if 'triggerType' in node and 'triggerItem' in node:
                 triggerObj = {'type': node['triggerType'], 'item': node['triggerItem'], 'spriteId': id(sprite)}
@@ -202,7 +202,7 @@ class DGSD_Game:
             
 
     def showExitMenu(self):
-        self._activeMenu = DGSD_Menu(self._exitMenuMap, (MenuConst.X, MenuConst.Y))
+        self._activeMenu = Deva_Menu(self._exitMenuMap, (MenuConst.X, MenuConst.Y))
 
     def handleKeys(self):
         while self._ok:
@@ -277,7 +277,13 @@ from config_scene import SceneMap
 from config_item import ItemMap
 
 if __name__ == "__main__":
-    game = DGSD_Game((80,30), MeshMap, ChatMap, SceneMap, ItemMap)
+    game = Deva_Game(
+      dim = (80,30), 
+      meshMap = MeshMap, 
+      chatMap = ChatMap, 
+      sceneMap = SceneMap, 
+      itemMap = ItemMap
+    )
     try:
         game.start()
     except:

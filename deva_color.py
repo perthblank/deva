@@ -1,5 +1,5 @@
 import curses
-from dgsd_const import ColorId
+from deva_const import ColorId
 
 class ColorPair:
     def __init__(self, id, front, back = curses.COLOR_BLACK):

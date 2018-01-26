@@ -1,7 +1,7 @@
-from dgsd_sprite import DGSD_Sprite
-from dgsd_mesh import DGSD_Mesh
+from deva_sprite import Deva_Sprite
+from deva_mesh import Deva_Mesh
 
-class DGSD_MenuMap():
+class Deva_MenuMap():
     def __init__(self, keyMap, keyOrder = None):
         if keyOrder is None:
             keyOrder = list(keyMap.keys())
@@ -16,12 +16,12 @@ class DGSD_MenuMap():
         self._keyMap[key]()
 
 
-class DGSD_Menu(DGSD_Sprite):
+class Deva_Menu(Deva_Sprite):
     def __init__(self, menuMap, pos, colorId = 0):
         keys = menuMap.keys
         self.menuMap = menuMap
         mesh = '\n' + '\n'.join(keys) + '\n'
-        super(DGSD_Menu, self).__init__(DGSD_Mesh(mesh), pos, colorId, True)
+        super(Deva_Menu, self).__init__(Deva_Mesh(mesh), pos, colorId, True)
         self._keys = keys
         self._opt = 0
 

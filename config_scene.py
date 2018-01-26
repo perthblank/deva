@@ -1,4 +1,4 @@
-from dgsd_const import MapGridType, TriggerType, ColorId
+from deva_const import MapGridType, TriggerType, ColorId
 
 main = {
     'rolePos': [20, 16],

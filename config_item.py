@@ -1,4 +1,4 @@
-from dgsd_const import ItemType
+from deva_const import ItemType
 
 _sword = {
         'name': 'sword',

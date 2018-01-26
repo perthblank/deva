@@ -1,11 +1,11 @@
-from dgsd_const import ChatTextType
-from dgsd_chat import DGSD_Chat
+from deva_const import ChatTextType
+from deva_chat import Deva_Chat
 
 chat0 = [
     {
         'id': 0,
         'type': ChatTextType.STATEMENT,
-        'title': 'Welcome To DGSD. \nA Game and engine',
+        'title': 'Welcome To Deva. \nA Game and engine',
         'exclude_status': [22],
     },
     {
@@ -50,6 +50,6 @@ chat0 = [
 ]
 
 ChatMap = {
-        'chat0': DGSD_Chat(chat0)
+        'chat0': Deva_Chat(chat0)
     }
 
