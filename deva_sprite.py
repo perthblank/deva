@@ -2,7 +2,7 @@ from deva_const import MeshType
 import random
 
 class Deva_Sprite:
-    def __init__(self, mesh, pos, zindex, colorId = 0, bold = False):
+    def __init__(self, mesh, pos, zindex, **kw):
         if isinstance(mesh.mesh, list):
             self.meshList = [m.split('\n')[1:-1] for m in mesh.mesh]
             self.meshListType = mesh.meshType
@@ -18,12 +18,12 @@ class Deva_Sprite:
         self.x = pos[0]
         self.y = pos[1]
 
-        self._colorId = colorId
+        self._colorId = kw.get('colorId', 0)
+        self._bold = kw.get('bold', 0)
 
         self._height = len(self.meshList[0])
         self._width = len(self.meshList[0][0])
 
-        self._bold = bold
         self._zindex = zindex
 
         self.meshListAnimateNum = 0

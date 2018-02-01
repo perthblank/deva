@@ -22,11 +22,11 @@ class Deva_Renderer:
         self.height = height
 
         # create an arrow >
-        self._menuArr = Deva_Sprite(Deva_Mesh(['\n>\n']), (0, 0), ColorId.YELLOW) 
-
-        self.logList = []
+        self._menuArr = Deva_Sprite(Deva_Mesh(['\n>\n']), (0, 0), 6, colorId = ColorId.YELLOW) 
 
         self._cameraPos = (0, 0)
+
+        self.logList = []
 
     def __del__(self):
         curses.echo()
@@ -57,11 +57,13 @@ class Deva_Renderer:
                 if(y>=1 and y < self.height - 1 and x >=1 and x < self.width - 1):
                     self.stdscr.addstr(y, x, meshRow[indCol], attr)
 
-    def renderMenu(self, menu):
+    def renderMenu(self, menu, arrow = True):
         self._menuArr.x = menu.x - 2
         self._menuArr.y = menu.y + menu.opt
-        self.renderSprite(self._menuArr, False)
         self.renderSprite(menu, False)
+        
+        if arrow:
+            self.renderSprite(self._menuArr, False)
 
     def renderChat(self, chat):
         textItem = chat.currentTextItem
@@ -79,10 +81,10 @@ class Deva_Renderer:
     def renderPicked(self, role, picked):
         pickedName = picked['name']
         self.stdscr.addstr(max(role.y - 1 - self.cameraY, 0), max(role.x - self.cameraX - int(len(pickedName)/2), 0), pickedName)
-        # add picked to inventory
 
     def renderInventory(self, inventory):
-        self.renderMenu(inventory.menu)
+        self.renderMenu(inventory.categoryMenu)
+        self.renderMenu(inventory.currentItemMenu, False)
 
     def refresh(self):
         self.stdscr.refresh()

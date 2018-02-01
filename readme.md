@@ -34,18 +34,18 @@ python3 deva_game.py
 ```
 for demo
 
-Keys: `w`, `a`, `s`, `d`, `Esc`, `Enter`
+Keys: move: `w`, `a`, `s`, `d`, inventory: `i`,  select: `Enter`, cancel/back: `Esc`
 
 ### Make a game
 This project provides the following RPG factors to config:
 - mesh
-- scene
+- scene (viewport)
 - chat
-- viewport
+- inventory
 
 next
-- inventory
-- attribute & battle system
+- attribute
+- battle system
 - task system
 
 #### Mesh
@@ -169,6 +169,9 @@ A smaller viewport will render a part of the scene, and the camera will follow t
 ----------------------------------------
 ```
 When the viewport is larger or equal than the scene dimension, the whole scene will be displayed
+
+#### Inventory
+Refer `config_item.py` to configure item set
 
 ### Acknowledgement
 ![TianLong](img/tianlongbabu.jpg)

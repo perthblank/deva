@@ -31,6 +31,9 @@ class MenuConst:
     X = 3
     Y = 1
 
+    TRIGGER_BY_ENTER = 1
+    TRIGGER_BY_HOVER = 2
+
 class RoleConst:
     COLLIDE_OFFSETS = [(1, 0), (0, 1), (2, 1), (1, 2)]
 
@@ -80,4 +83,5 @@ class ItemType:
 
 class InventoryConst:
     MENU_POS = (5, 5)
+    LIST_POS = (20, 5)
 

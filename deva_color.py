@@ -19,7 +19,6 @@ class ColorPair:
     def back(self):
         return self._back
 
-
 YELLOW  = ColorPair(ColorId.YELLOW, curses.COLOR_YELLOW)
 GREEN   = ColorPair(ColorId.GREEN, curses.COLOR_GREEN)
 BLUE    = ColorPair(ColorId.BLUE, curses.COLOR_BLUE)
@@ -28,3 +27,4 @@ MAGENTA = ColorPair(ColorId.MAGENTA, curses.COLOR_MAGENTA)
 CYAN    = ColorPair(ColorId.CYAN, curses.COLOR_CYAN)
     
 COLORS = [YELLOW, GREEN, BLUE, RED, MAGENTA, CYAN]
+

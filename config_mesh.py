@@ -134,7 +134,7 @@ _temple = [
 
 temple = Deva_Mesh(_temple)
 
-_box = [
+_pickable = [
 """
 x
 """,
@@ -143,7 +143,7 @@ o
 """
 ]
 
-box = Deva_Mesh(_box, MeshType.ANIMATE_AUTO)
+pickable = Deva_Mesh(_pickable, MeshType.ANIMATE_AUTO)
 
 MeshMap = {
         'rock': rock,
@@ -153,5 +153,5 @@ MeshMap = {
         'river': river,
         'grass': grass,
         'temple': temple,
-        'box': box,
+        'pickable': pickable,
         }

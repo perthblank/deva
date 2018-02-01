@@ -56,7 +56,7 @@ main = {
             'bold': True,
         },
         {
-            'meshName': 'box',
+            'meshName': 'pickable',
             'pos': [65,7],
             'zindex': 5,
             'colorId': ColorId.YELLOW,
@@ -65,7 +65,16 @@ main = {
             'triggerItem': 'jinchuangyao',
         },
         {
-            'meshName': 'box',
+            'meshName': 'pickable',
+            'pos': [64,11],
+            'zindex': 5,
+            'colorId': ColorId.YELLOW,
+            'gridType': MapGridType.BLOCK,
+            'triggerType': TriggerType.ITEM,
+            'triggerItem': 'herb',
+        },
+        {
+            'meshName': 'pickable',
             'pos': [30,6],
             'zindex': 5,
             'colorId': ColorId.YELLOW,
@@ -73,7 +82,33 @@ main = {
             'triggerType': TriggerType.ITEM,
             'triggerItem': 'sword',
         },
-    
+        {
+            'meshName': 'pickable',
+            'pos': [22,26],
+            'zindex': 5,
+            'colorId': ColorId.YELLOW,
+            'gridType': MapGridType.BLOCK,
+            'triggerType': TriggerType.ITEM,
+            'triggerItem': 'fanri',
+        },
+        {
+            'meshName': 'pickable',
+            'pos': [19,27],
+            'zindex': 5,
+            'colorId': ColorId.YELLOW,
+            'gridType': MapGridType.BLOCK,
+            'triggerType': TriggerType.ITEM,
+            'triggerItem': 'shoe',
+        },
+        {
+            'meshName': 'pickable',
+            'pos': [19,17],
+            'zindex': 5,
+            'colorId': ColorId.YELLOW,
+            'gridType': MapGridType.BLOCK,
+            'triggerType': TriggerType.ITEM,
+            'triggerItem': 'armor',
+        },
     ]
 }
 

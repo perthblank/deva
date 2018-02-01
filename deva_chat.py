@@ -57,7 +57,7 @@ class Deva_Chat:
                     for i in range(len(textItem['branch'])):
                         mmap[textItem['branch'][i]] = self.jumpTo(textItem['branch_to'][i])
 
-                    self._activeMenu = Deva_Menu(Deva_MenuMap(mmap), (ChatBoxConst.X, 0))
+                    self._activeMenu = Deva_Menu(Deva_MenuMap(mmap), (ChatBoxConst.X, 0), bold = True)
                 return True
             self.reset()
             return None
@@ -67,19 +67,12 @@ class Deva_Chat:
             self._activeMenu = None
             return True
 
-    def arrUp(self):
-        if self._activeMenu:
-            self._activeMenu.arrUp()
-
-    def arrDown(self):
-        if self._activeMenu:
-            self._activeMenu.arrDown()
-
     def handleKey(self, keyCode):
-        if keyCode == KeyCode.W:
-            self.arrUp()
-        elif keyCode == KeyCode.S:
-            self.arrDown()
+        if self._activeMenu:
+            if keyCode == KeyCode.W:
+                self._activeMenu.arrUp()
+            elif keyCode == KeyCode.S:
+                self._activeMenu.arrDown()
 
     @property
     def branchMenu(self):

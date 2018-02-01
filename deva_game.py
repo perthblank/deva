@@ -78,7 +78,7 @@ class Deva_Game:
         self.addSprite(self.role)
 
         for node in scene.meshNodes:
-            sprite = Deva_Sprite(self.meshMap[node['meshName']], node['pos'], node['zindex'], node.get('colorId', 0), node.get('bold', False))
+            sprite = Deva_Sprite(self.meshMap[node['meshName']], node['pos'], node['zindex'], colorId = node.get('colorId', 0), bold = node.get('bold', False))
             self.addSprite(sprite, node['gridType'])
             if 'triggerType' in node and 'triggerItem' in node:
                 triggerObj = {'type': node['triggerType'], 'item': node['triggerItem'], 'spriteId': id(sprite)}
@@ -86,7 +86,7 @@ class Deva_Game:
                 if node['triggerType'] == TriggerType.CHANGE_SCENE:
                     for row in range(sprite.height):
                         triggerPos += [(i + sprite.x, row + sprite.y) for i, c in enumerate(sprite.mesh[row]) if c == TRIGGER_CHAR]
-                elif node['triggerType'] == TriggerType.CHAT or node ['triggerType'] == TriggerType.ITEM:
+                elif node['triggerType'] == TriggerType.CHAT or node['triggerType'] == TriggerType.ITEM:
                     for row in range(sprite.height):
                         triggerPos += [(i + sprite.x, row + sprite.y) for i, c in enumerate(sprite.mesh[row])]
 
@@ -164,7 +164,7 @@ class Deva_Game:
                             if triggerObj['type'] == TriggerType.CHANGE_SCENE:
                                 self.loadScene(self.sceneMap[triggerObj['item']])
                             elif triggerObj['type'] == TriggerType.CHAT:
-                                self.showChat(self.chatMap[triggerObj['item']])
+                                self.activeChat(self.chatMap[triggerObj['item']])
                             elif triggerObj['type'] == TriggerType.ITEM:
                                 self.pickItem(self.itemMap[triggerObj['item']], triggerObj['spriteId'])
                                 self.grids[self.getGridId(x + offset[0], y + offset[1])] = MapGridType.FREE
@@ -175,11 +175,11 @@ class Deva_Game:
 
         elif keyCode == KeyCode.ESC:
             self.mode = ControlMode.MENU
-            self.showExitMenu()
+            self.activeExitMenu(self._exitMenuMap)
 
         elif keyCode == KeyCode.I:
             self.mode = ControlMode.INVENTORY
-            self.showInventory()
+            #self.showInventory()
 
         if keyCode == ord('t'):
             self.test()
@@ -188,16 +188,15 @@ class Deva_Game:
         # self.log(' '.join([str(id(s)) for s in self.sprites]))
         pass
 
-    def showChat(self, chat):
+    def activeChat(self, chat):
         self.mode = ControlMode.CHAT
         self._activeChat = chat
 
-    def showExitMenu(self):
-        self._activeMenu = Deva_Menu(self._exitMenuMap, (MenuConst.X, MenuConst.Y))
+    def activeExitMenu(self, menuMap):
+        self._activeMenu = Deva_Menu(menuMap, (MenuConst.X, MenuConst.Y))
 
     def showInventory(self):
         pass
-
 
     def handleMenu(self, keyCode):
         if keyCode == KeyCode.ESC:
@@ -219,6 +218,8 @@ class Deva_Game:
         else:
             self._roleInventory.handleKey(keyCode)
 
+        # self.log(self._roleInventory.currentItems())
+
     def handleKeys(self):
         while self._ok:
             keyCode = self.renderer.getch()
@@ -231,9 +232,7 @@ class Deva_Game:
 
         self._activePicked = item
         self._roleInventory.add(item)
-
         self.removeSprite(spriteId)
-
                 
     def resume(self):
         self.mode = ControlMode.MOVE
@@ -269,14 +268,14 @@ class Deva_Game:
                 if self._activePicked is not None:
                     self.renderer.renderPicked(self.role, self._activePicked)
 
-                fps += 1
-                time1 = time.time()
-                if(time1 - time0 > 1):
-                    lastFps = fps
-                    fps = 0
-                    time0 = time1
+            fps += 1
+            time1 = time.time()
+            if(time1 - time0 > 1):
+                lastFps = fps
+                fps = 0
+                time0 = time1
 
-                self.renderer.addstr(0, 20, 'fps:' + str(lastFps))
+            self.renderer.addstr(0, 20, 'fps:' + str(lastFps))
 
             self.renderer.printLog()
             self.renderer.refresh()
