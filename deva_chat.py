@@ -1,4 +1,4 @@
-from deva_const import ChatTextType, ChatBoxConst
+from deva_const import ChatTextType, ChatBoxConst, KeyCode
 from deva_menu import Deva_Menu, Deva_MenuMap
 
 class Deva_Chat:
@@ -74,6 +74,12 @@ class Deva_Chat:
     def arrDown(self):
         if self._activeMenu:
             self._activeMenu.arrDown()
+
+    def handleKey(self, keyCode):
+        if keyCode == KeyCode.W:
+            self.arrUp()
+        elif keyCode == KeyCode.S:
+            self.arrDown()
 
     @property
     def branchMenu(self):

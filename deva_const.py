@@ -1,8 +1,18 @@
+class KeyCode:
+    ENTER = 10
+    ESC = 27
+    W = ord('w')
+    S = ord('s')
+    A = ord('a')
+    D = ord('d')
+    I = ord('i')
+
+
 class MoveKey:
-    UP      = ord('w')
-    DOWN    = ord('s')
-    LEFT    = ord('a')
-    RIGHT   = ord('d')
+    UP      = KeyCode.W
+    DOWN    = KeyCode.S
+    LEFT    = KeyCode.A
+    RIGHT   = KeyCode.D
 
 Directions = {
     MoveKey.UP: [0, -1],
@@ -16,12 +26,6 @@ class MeshType:
     RANDOM = 2
     ANIMATE_ON_TOUCH = 3
     ANIMATE_AUTO = 4
-
-class MyKeyCode:
-    ENTER = 10
-    ESC = 27
-    W = ord('w')
-    S = ord('s')
 
 class MenuConst:
     X = 3
@@ -39,10 +43,11 @@ class ControlMode:
     MOVE = 1
     MENU = 2
     CHAT = 3
+    INVENTORY = 4
 
 class MapGridType:
-    FREE = '_'
-    BLOCK = 2
+    FREE    = '_'
+    BLOCK   = 2
 
 class TriggerType:
     CHANGE_SCENE = 1
@@ -57,20 +62,22 @@ class ColorId:
     MAGENTA = 5
     CYAN    = 6
 
-
 TRIGGER_CHAR = '#'
 
 ROLE_ZINDEX = 5
 
 class ChatTextType:
-    STATEMENT = 1
-    BRANCH = 2
+    STATEMENT   = 1
+    BRANCH      = 2
 
 class ChatBoxConst:
     X = 4
 
 class ItemType:
-    WEAPON = 1
-    ARMOR = 2
-    MEDICIEN = 3
+    WEAPON      = 'Weapon'
+    ARMOR       = 'Armor'
+    MEDICINE    = 'Medicine'
+
+class InventoryConst:
+    MENU_POS = (5, 5)
 

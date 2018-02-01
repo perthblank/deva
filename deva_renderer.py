@@ -81,6 +81,9 @@ class Deva_Renderer:
         self.stdscr.addstr(max(role.y - 1 - self.cameraY, 0), max(role.x - self.cameraX - int(len(pickedName)/2), 0), pickedName)
         # add picked to inventory
 
+    def renderInventory(self, inventory):
+        self.renderMenu(inventory.menu)
+
     def refresh(self):
         self.stdscr.refresh()
 

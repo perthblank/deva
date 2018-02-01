@@ -1,5 +1,6 @@
 from deva_sprite import Deva_Sprite
 from deva_mesh import Deva_Mesh
+from deva_const import KeyCode
 
 class Deva_MenuMap():
     def __init__(self, keyMap, keyOrder = None):
@@ -24,6 +25,14 @@ class Deva_Menu(Deva_Sprite):
         super(Deva_Menu, self).__init__(Deva_Mesh(mesh), pos, colorId, True)
         self._keys = keys
         self._opt = 0
+
+    def handleKey(self, keyCode):
+        if keyCode == KeyCode.W:
+            self.arrUp()
+        elif keyCode == KeyCode.S:
+            self.arrDown()
+        elif keyCode == KeyCode.ENTER:
+            self.callCurrent()
 
     def callCurrent(self):
         self.menuMap.call(self.currentKey())

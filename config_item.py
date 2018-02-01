@@ -7,7 +7,12 @@ _sword = {
 
 _jinchuangyao = {
         'name': 'JinChuangYao',
-        'type': ItemType.MEDICIEN,
+        'type': ItemType.MEDICINE,
+}
+
+_jinchuangyao = {
+        'name': 'armor',
+        'type': ItemType.ARMOR,
 }
 
 ItemMap = {

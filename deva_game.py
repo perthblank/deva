@@ -6,6 +6,7 @@ from deva_mesh import Deva_Mesh
 from deva_sprite import Deva_Sprite
 from deva_scene import Deva_Scene
 from deva_menu import Deva_Menu, Deva_MenuMap
+from deva_inventory import Deva_Inventory
 from deva_const import *
 
 from util import *
@@ -33,10 +34,19 @@ class Deva_Game:
         }, [SConst.BACK, SConst.SAVE, SConst.EXIT])
 
         self.loadScene(self.sceneMap['main'])
-        self._mode = ControlMode.MOVE
-        self._ok = True
+        self._keyModeHandler = {
+            ControlMode.MOVE: self.handleMove,
+            ControlMode.MENU: self.handleMenu,
+            ControlMode.CHAT: self.handleChat,
+            ControlMode.INVENTORY: self.handleInventory,
+        }
 
         self._activePicked = None
+
+        self._roleInventory = Deva_Inventory()
+
+        self.mode = ControlMode.MOVE
+        self._ok = True
 
     def start(self):
         handleThread = threading.Thread(target=self.handleKeys)
@@ -106,6 +116,13 @@ class Deva_Game:
                     if(gridType != MapGridType.FREE):
                         self.grids[gridId] = gridType 
 
+    def removeSprite(self, spriteId):
+        newSprites = []
+        for s in self.sprites:
+            if id(s) != spriteId:
+                newSprites.append(s)
+        self.sprites = newSprites
+
     def clearScene(self):
         self.sprites = []
         self.triggers = {}
@@ -156,6 +173,14 @@ class Deva_Game:
             for s in self.sprites:
                 s.touch()
 
+        elif keyCode == KeyCode.ESC:
+            self.mode = ControlMode.MENU
+            self.showExitMenu()
+
+        elif keyCode == KeyCode.I:
+            self.mode = ControlMode.INVENTORY
+            self.showInventory()
+
         if keyCode == ord('t'):
             self.test()
 
@@ -164,76 +189,59 @@ class Deva_Game:
         pass
 
     def showChat(self, chat):
-        self._mode = ControlMode.CHAT
+        self.mode = ControlMode.CHAT
         self._activeChat = chat
-
-    def handleUtil(self, keyCode):
-        if keyCode == MyKeyCode.ESC:
-            self._mode = ControlMode.MENU
-            self.showExitMenu()
-
-    def handleMenu(self, keyCode):
-
-        if keyCode == MyKeyCode.W:
-            self._activeMenu.arrUp()
-        elif keyCode == MyKeyCode.S:
-            self._activeMenu.arrDown()
-        elif keyCode == MyKeyCode.ENTER:
-            self._activeMenu.callCurrent()
-        elif keyCode == MyKeyCode.ESC:
-            self._mode = ControlMode.MOVE
-
-    def handleChat(self, keyCode):
-        # if keyCode == MyKeyCode.ESC:
-        #     self._mode = ControlMode.MOVE
-
-        if keyCode == MyKeyCode.ENTER:
-            hasNext = self._activeChat.next()
-            # self.log(list(self._activeChat.statusSet))
-            if not hasNext:
-                self._mode = ControlMode.MOVE
-
-        elif keyCode == MyKeyCode.W:
-            self._activeChat.arrUp()
-        elif keyCode == MyKeyCode.S:
-            self._activeChat.arrDown()
-
-        # self.log(self._activeChat.opt)
-            
 
     def showExitMenu(self):
         self._activeMenu = Deva_Menu(self._exitMenuMap, (MenuConst.X, MenuConst.Y))
 
+    def showInventory(self):
+        pass
+
+
+    def handleMenu(self, keyCode):
+        if keyCode == KeyCode.ESC:
+            self.mode = ControlMode.MOVE
+        else:
+            self._activeMenu.handleKey(keyCode)
+
+    def handleChat(self, keyCode):
+        if keyCode == KeyCode.ENTER:
+            hasNext = self._activeChat.next()
+            if not hasNext:
+                self.mode = ControlMode.MOVE
+        else:
+            self._activeChat.handleKey(keyCode)
+
+    def handleInventory(self, keyCode):
+        if keyCode == KeyCode.ESC:
+            self.mode = ControlMode.MOVE
+        else:
+            self._roleInventory.handleKey(keyCode)
+
     def handleKeys(self):
         while self._ok:
             keyCode = self.renderer.getch()
-            self.currentKey = str(keyCode)
-            if self._mode == ControlMode.MOVE:
-                self.handleMove(keyCode)
-                self.handleUtil(keyCode)
-            elif self._mode == ControlMode.CHAT:
-                self.handleChat(keyCode)
-            else:
-                self.handleMenu(keyCode)
+            #self.currentKey = str(keyCode)
+
+            self._keyModeHandler[self.mode](keyCode)
 
     def pickItem(self, item, spriteId):
-        # self.log(item)
-        # self.log(spriteId)
+        #self.log(item)
 
         self._activePicked = item
-        newSprites = []
-        for s in self.sprites:
-            if id(s) != spriteId:
-                newSprites.append(s)
-        self.sprites = newSprites
+        self._roleInventory.add(item)
+
+        self.removeSprite(spriteId)
+
                 
     def resume(self):
-        self._mode = ControlMode.MOVE
+        self.mode = ControlMode.MOVE
 
     def save(self):
         #TODO
         self.log('save\n')
-        self._mode = ControlMode.MOVE
+        self.mode = ControlMode.MOVE
 
     def exit(self):
         self._ok = False
@@ -245,30 +253,41 @@ class Deva_Game:
         while self._ok:
             self.renderer.renderBorder()
             # self.renderer.addstr(0, 0, self.currentKey)
-            for s in self.sprites:
-                self.renderer.renderSprite(s)
+            if self.mode == ControlMode.INVENTORY:
+                self.renderer.renderInventory(self._roleInventory)
 
-            if self._mode == ControlMode.CHAT:
-                self.renderer.renderChat(self._activeChat)
-                pass
+            else:
+                for s in self.sprites:
+                    self.renderer.renderSprite(s)
 
-            if self._mode == ControlMode.MENU:
-                self.renderer.renderMenu(self._activeMenu)
+                if self.mode == ControlMode.CHAT:
+                    self.renderer.renderChat(self._activeChat)
 
-            if self._activePicked is not None:
-                self.renderer.renderPicked(self.role, self._activePicked)
+                if self.mode == ControlMode.MENU:
+                    self.renderer.renderMenu(self._activeMenu)
 
-            fps += 1
-            time1 = time.time()
-            if(time1 - time0 > 1):
-                lastFps = fps
-                fps = 0
-                time0 = time1
+                if self._activePicked is not None:
+                    self.renderer.renderPicked(self.role, self._activePicked)
 
-            self.renderer.addstr(0, 20, 'fps:' + str(lastFps))
+                fps += 1
+                time1 = time.time()
+                if(time1 - time0 > 1):
+                    lastFps = fps
+                    fps = 0
+                    time0 = time1
+
+                self.renderer.addstr(0, 20, 'fps:' + str(lastFps))
 
             self.renderer.printLog()
             self.renderer.refresh()
+
+    @property
+    def mode(self):
+        return self._mode
+
+    @mode.setter
+    def mode(self, m):
+        self._mode = m
 
 
 from config_mesh import MeshMap
