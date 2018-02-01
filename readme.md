@@ -156,6 +156,11 @@ When the viewport is larger or equal than the scene dimension, the whole scene w
 #### Inventory
 Refer `config_item.py` to configure item set
 
+#### FAQ
+1. Get error like `_curses.error: addwstr() returned ERR`
+
+Make sure the size of the terminal window is larger than viewport in game (default is 80 chars * 30 lines).
+
 ### Acknowledgement
 ![TianLong](img/tianlongbabu.jpg)
 
