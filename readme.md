@@ -11,24 +11,7 @@ Enjoy an RPG, in terminal.
 Text-image rendered by `curses` in python.
 
 ### Get started
-```python
-from config_mesh import MeshMap
-from config_chat import ChatMap
-from config_scene import SceneMap
-from config_item import ItemMap
-
-from deva_game import Deva_Game 
-
-game = Deva_Game(
-  (80,30), 
-  meshMap = MeshMap, 
-  chatMap = ChatMap, 
-  sceneMap = SceneMap, 
-  itemMap = ItemMap
-)
-game.start()
-```
-or run
+Simply run
 ```
 python3 deva_game.py
 ```
