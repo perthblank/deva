@@ -1,40 +1,36 @@
 from deva_const import ItemType
 
-_sword = {
-        'name': 'Iron Sword',
+ItemList = [
+    {
+        'name': 'sword',            # refered by config
+        'text': 'Iron Sword',       # display in game
         'type': ItemType.WEAPON,
-}
-
-_fanri = {
-        'name': 'Fan Ri Sword',
+    }, 
+    {
+        'name': 'fanri',
+        'text': 'Fan Ri Sword',
         'type': ItemType.WEAPON,
-}
-
-_jinchuangyao = {
-        'name': 'JinChuangYao',
+    },
+    {
+        'name': 'jinchuangyao',
+        'text': 'JinChuangYao',
         'type': ItemType.MEDICINE,
-}
-
-_herb = {
-        'name': 'Green Herb',
+    },
+    {
+        'name': 'hreb',
+        'text': 'Green Herb',
         'type': ItemType.MEDICINE,
-}
-
-_armor = {
-        'name': 'Cloth Armor',
+    },
+    {
+        'name': 'armor',
+        'text': 'Cloth Armor',
         'type': ItemType.ARMOR,
-}
+    },
+    {
 
-_shoe = {
-        'name': 'Leather Shoe',
+        'name': 'shoe',
+        'text': 'Leather Shoe',
         'type': ItemType.ARMOR,
-}
+    },
+]
 
-ItemMap = {
-        'fanri': _fanri,
-        'sword': _sword,
-        'jinchuangyao': _jinchuangyao,
-        'herb': _herb,
-        'armor': _armor,
-        'shoe': _shoe,
-}

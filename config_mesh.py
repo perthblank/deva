@@ -1,4 +1,3 @@
-from deva_mesh import Deva_Mesh
 from deva_const import MeshType
 
 # put the quotes in single lines
@@ -14,8 +13,6 @@ _role = [
  " 
 """]
 
-role = Deva_Mesh(_role, MeshType.ANIMATE_ON_TOUCH)
-
 _npc = [
 """
  o 
@@ -24,7 +21,6 @@ _npc = [
 """
 ]
 
-npc = Deva_Mesh(_npc)
 
 #4x9
 _rock = [
@@ -48,7 +44,6 @@ s   `s/--
 """
 ]
 
-rock = Deva_Mesh(_rock, MeshType.RANDOM)
 
 _house = [
 """
@@ -63,7 +58,6 @@ y     y   |    -+
 """
 ]
 
-house = Deva_Mesh(_house, MeshType.STATIC)
 
 
 _river = [
@@ -97,7 +91,6 @@ _river = [
 
 ]
 
-river = Deva_Mesh(_river, MeshType.ANIMATE_AUTO)
 
 _grass = [
 """
@@ -114,7 +107,6 @@ _grass = [
 """
 ]
 
-grass = Deva_Mesh(_grass)
 
 _temple = [
 """
@@ -132,7 +124,6 @@ _temple = [
 """
 ]
 
-temple = Deva_Mesh(_temple)
 
 _pickable = [
 """
@@ -143,15 +134,43 @@ o
 """
 ]
 
-pickable = Deva_Mesh(_pickable, MeshType.ANIMATE_AUTO)
 
-MeshMap = {
-        'rock': rock,
-        'role': role,
-        'house': house,
-        'npc': npc,
-        'river': river,
-        'grass': grass,
-        'temple': temple,
-        'pickable': pickable,
-        }
+MeshList = [
+    {
+        'name': 'role',
+        'mesh': _role,
+        'type': MeshType.ANIMATE_ON_TOUCH
+    },
+    {
+        'name': 'rock',
+        'mesh': _rock,
+        'type': MeshType.RANDOM
+    },
+    {
+        'name': 'npc',
+        'mesh': _npc,
+    },
+    {
+        'name': 'river',
+        'mesh': _river,
+        'type': MeshType.ANIMATE_AUTO
+    },
+    {
+        'name': 'grass',
+        'mesh': _grass,
+    },
+    {
+        'name': 'temple',
+        'mesh': _temple,
+    },
+    {
+        'name': 'house',
+        'mesh': _house,
+    },
+    {
+        'name': 'pickable',
+        'mesh': _pickable,
+        'type': MeshType.ANIMATE_AUTO
+    },
+]
+

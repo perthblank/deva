@@ -7,6 +7,7 @@ from deva_sprite import Deva_Sprite
 from deva_scene import Deva_Scene
 from deva_menu import Deva_Menu, Deva_MenuMap
 from deva_inventory import Deva_Inventory
+from deva_chat import Deva_Chat
 from deva_const import *
 
 from util import *
@@ -17,10 +18,10 @@ class Deva_Game:
     def __init__(self, **configs):
         self.viewWidth  = configs['dim'][0]
         self.viewHeight = configs['dim'][1]
-        self.meshMap  = configs['meshMap']
-        self.sceneMap = configs['sceneMap']
-        self.chatMap  = configs['chatMap']
-        self.itemMap  = configs['itemMap']
+        self.meshMap  = self.convertConfigMap(configs['meshList'], ListOf.MESH)
+        self.sceneMap = self.convertConfigMap(configs['sceneList'])
+        self.chatMap  = self.convertConfigMap(configs['chatList'], ListOf.CHAT)
+        self.itemMap  = self.convertConfigMap(configs['itemList'])
 
         self.renderer = Deva_Renderer(self.viewWidth, self.viewHeight)
 
@@ -288,19 +289,33 @@ class Deva_Game:
     def mode(self, m):
         self._mode = m
 
+    def convertConfigMap(self, configList, listOf = None):
+        mmap = {}
+        if listOf == ListOf.CHAT:
+            for x in configList:
+                mmap[x['name']] = Deva_Chat(x['content'])
+        elif listOf == ListOf.MESH:
+            for x in configList:
+                mmap[x['name']] = Deva_Mesh(x['mesh'], x.get('type', MeshType.STATIC))
+        else:
+            for x in configList:
+                mmap[x['name']] = x
 
-from config_mesh import MeshMap
-from config_chat import ChatMap
-from config_scene import SceneMap
-from config_item import ItemMap
+        return mmap
+
+
+from config_mesh import MeshList
+from config_chat import ChatList
+from config_scene import SceneList
+from config_item import ItemList
 
 if __name__ == "__main__":
     game = Deva_Game(
       dim = (80,30), 
-      meshMap = MeshMap, 
-      chatMap = ChatMap, 
-      sceneMap = SceneMap, 
-      itemMap = ItemMap
+      meshList = MeshList, 
+      chatList = ChatList, 
+      sceneList = SceneList, 
+      itemList = ItemList
     )
     try:
         game.start()

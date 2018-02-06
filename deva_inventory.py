@@ -21,8 +21,8 @@ class Deva_Inventory:
         return j
 
     def add(self, item):
-        n = item['name']
         t = item['type']
+        n = item['text']
         self._typeMap[t][n] = self._typeMap[t].get(n, 0) + 1
 
     def handleKey(self, keyCode):

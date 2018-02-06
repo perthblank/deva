@@ -85,3 +85,7 @@ class InventoryConst:
     MENU_POS = (5, 5)
     LIST_POS = (20, 5)
 
+class ListOf:
+    CHAT = 1
+    MESH = 2
+

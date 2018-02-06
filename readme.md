@@ -86,6 +86,7 @@ Refer `config_scene.py`
 A scene is defined as the starting place of role and all other mesh nodes.
 ```
 scene = {
+  'name': scene name
   'rolePos': [x, y],
   'dimension': [width, height],
   'nodes': [...mesh_nodes]

@@ -79,7 +79,7 @@ class Deva_Renderer:
                 self.stdscr.addstr(self.height - 2 - len(titles) + i - menu.height, 2, titles[i])
 
     def renderPicked(self, role, picked):
-        pickedName = picked['name']
+        pickedName = picked['text']
         self.stdscr.addstr(max(role.y - 1 - self.cameraY, 0), max(role.x - self.cameraX - int(len(pickedName)/2), 0), pickedName)
 
     def renderInventory(self, inventory):
