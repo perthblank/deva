@@ -84,8 +84,12 @@ class ItemType:
 class InventoryConst:
     MENU_POS = (5, 5)
     LIST_POS = (20, 5)
+    FIG_POS  = [25, 3]
 
 class ListOf:
     CHAT = 1
     MESH = 2
 
+class ArrowAt:
+    LEV1 = 1
+    LEV2 = 2

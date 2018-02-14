@@ -134,6 +134,28 @@ o
 """
 ]
 
+_sword = [
+"""
+  ^
+ | |
+ | |
+ | |
+=====
+  |
+""",
+]
+
+_itemPlaceHolder = [
+"""
+|-----------|
+|           |
+|           |
+|           |
+|           |
+|-----------|
+"""
+]
+
 
 MeshList = [
     {
@@ -171,6 +193,14 @@ MeshList = [
         'name': 'pickable',
         'mesh': _pickable,
         'type': MeshType.ANIMATE_AUTO
+    },
+    {
+        'name': 'sword',
+        'mesh': _sword
+    },
+    {
+        'name': 'placeHolder',
+        'mesh': _itemPlaceHolder
     },
 ]
 

@@ -2,7 +2,7 @@ import curses
 import deva_color as dcolor
 from deva_sprite import Deva_Sprite
 from deva_mesh import Deva_Mesh
-from deva_const import ColorId, ChatTextType
+from deva_const import ColorId, ChatTextType, ArrowAt
 
 class Deva_Renderer:
     def __init__(self, width, height):
@@ -83,8 +83,9 @@ class Deva_Renderer:
         self.stdscr.addstr(max(role.y - 1 - self.cameraY, 0), max(role.x - self.cameraX - int(len(pickedName)/2), 0), pickedName)
 
     def renderInventory(self, inventory):
-        self.renderMenu(inventory.categoryMenu)
-        self.renderMenu(inventory.currentItemMenu, False)
+        #self.log(inventory.test())
+        self.renderMenu(inventory.categoryMenu, inventory.arrowAt == ArrowAt.LEV1)
+        self.renderMenu(inventory.currentItemMenu, inventory.arrowAt == ArrowAt.LEV2)
 
     def refresh(self):
         self.stdscr.refresh()

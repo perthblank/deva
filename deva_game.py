@@ -49,6 +49,10 @@ class Deva_Game:
         self.mode = ControlMode.MOVE
         self._ok = True
 
+
+        for i in configs['itemList']:
+            self._roleInventory.add(i)
+
     def start(self):
         handleThread = threading.Thread(target=self.handleKeys)
         renderThread = threading.Thread(target=self.render)

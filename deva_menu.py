@@ -41,16 +41,18 @@ class Deva_Menu(Deva_Sprite):
             self.callCurrent()
 
     def callCurrent(self):
-        self.menuMap.call(self.currentKey())
+        self.menuMap.call(self.currentKey)
 
-    def currentKey(self):
-        return self._keys[self.opt]
 
     def arrUp(self):
         self.opt = self.opt - 1
 
     def arrDown(self):
         self.opt = self.opt + 1
+
+    @property
+    def currentKey(self):
+        return self._keys[self.opt]
 
     @property
     def opt(self):
