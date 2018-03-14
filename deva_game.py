@@ -23,7 +23,8 @@ class Deva_Game:
         self.chatMap  = self.convertConfigMap(configs['chatList'], ListOf.CHAT)
         self.itemMap  = self.convertConfigMap(configs['itemList'])
 
-        self.renderer = Deva_Renderer(self.viewWidth, self.viewHeight)
+        self.renderer = Deva_Renderer.instance()
+        self.renderer.dim(configs['dim'])
 
         self.printMsg = ''
         self.currentKey = ' '
@@ -49,9 +50,10 @@ class Deva_Game:
         self.mode = ControlMode.MOVE
         self._ok = True
 
-
         for i in configs['itemList']:
             self._roleInventory.add(i)
+
+        self._roleInventory.loadItemMenu()
 
     def start(self):
         handleThread = threading.Thread(target=self.handleKeys)

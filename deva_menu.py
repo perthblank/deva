@@ -1,6 +1,7 @@
 from deva_sprite import Deva_Sprite
 from deva_mesh import Deva_Mesh
 from deva_const import KeyCode, MenuConst, ColorId
+from deva_renderer import Deva_Renderer as DR
 
 class Deva_MenuMap():
     def __init__(self, keyMap, keyOrder = None):
@@ -41,8 +42,8 @@ class Deva_Menu(Deva_Sprite):
             self.callCurrent()
 
     def callCurrent(self):
+        DR.instance().log(self.currentKey)
         self.menuMap.call(self.currentKey)
-
 
     def arrUp(self):
         self.opt = self.opt - 1
@@ -62,5 +63,6 @@ class Deva_Menu(Deva_Sprite):
     def opt(self, val):
         self._opt = max(0, min(val, self.height -1))
         if self._mode == MenuConst.TRIGGER_BY_HOVER:
+            DR.instance().log("call")
             self.callCurrent()
 
