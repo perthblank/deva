@@ -2,44 +2,37 @@ from deva_const import ItemType
 
 ItemList = [
     {
-        'name': 'sword',            # refered by config
-        'text': 'Iron Sword',       # display in game
+        'name': 'Iron Sword',       # display in game
         'type': ItemType.WEAPON,
         'meshName': 'sword',
     }, 
     {
-        'name': 'fanri',
-        'text': 'Fan Ri Sword',
+        'name': 'Fan Ri Sword',
         'type': ItemType.WEAPON,
-        'meshName': 'sword',
+        'meshName': 'swordFanri',
     },
     {
-        'name': 'jinchuangyao',
-        'text': 'JinChuangYao',
+        'name': 'JinChuangYao',
         'type': ItemType.MEDICINE,
         'meshName': 'placeHolder',
     },
     {
-        'name': 'dahuandan',
-        'text': 'DaHuanDan',
+        'name': 'DaHuanDan',
         'type': ItemType.MEDICINE,
         'meshName': 'placeHolder',
     },
     {
-        'name': 'hreb',
-        'text': 'Green Herb',
+        'name': 'Green Herb',
         'type': ItemType.MEDICINE,
         'meshName': 'placeHolder',
     },
     {
-        'name': 'armor',
-        'text': 'Cloth Armor',
+        'name': 'Cloth Armor',
         'type': ItemType.ARMOR,
         'meshName': 'placeHolder',
     },
     {
-        'name': 'shoe',
-        'text': 'Leather Shoe',
+        'name': 'Leather Shoe',
         'type': ItemType.ARMOR,
         'meshName': 'placeHolder',
     },

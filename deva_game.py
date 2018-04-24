@@ -24,6 +24,7 @@ class Deva_Game:
         self.itemMap  = self.convertConfigMap(configs['itemList'])
 
         self.renderer = Deva_Renderer.instance()
+        self.renderer.setMaps(itemMap = self.itemMap, meshMap = self.meshMap)
         self.renderer.dim(configs['dim'])
 
         self.printMsg = ''
@@ -173,14 +174,14 @@ class Deva_Game:
                             elif triggerObj['type'] == TriggerType.CHAT:
                                 self.activeChat(self.chatMap[triggerObj['item']])
                             elif triggerObj['type'] == TriggerType.ITEM:
-                                self.pickItem(self.itemMap[triggerObj['item']], triggerObj['spriteId'])
+                                self.pickItem(selfitemMap[triggerObj['item']], triggerObj['spriteId'])
                                 self.grids[self.getGridId(x + offset[0], y + offset[1])] = MapGridType.FREE
                             break
 
             for s in self.sprites:
                 s.touch()
 
-        elif keyCode == KeyCode.ESC:
+        elif keyCode == KeyCode.ESC or keyCode == KeyCode.Q:
             self.mode = ControlMode.MENU
             self.activeExitMenu(self._exitMenuMap)
 

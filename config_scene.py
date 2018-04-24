@@ -64,7 +64,7 @@ SceneList = [
                 'colorId': ColorId.YELLOW,
                 'gridType': MapGridType.BLOCK,
                 'triggerType': TriggerType.ITEM,
-                'triggerItem': 'jinchuangyao',
+                'triggerItem': 'JinChuangYao',
             },
             {
                 'meshName': 'pickable',
@@ -82,7 +82,7 @@ SceneList = [
                 'colorId': ColorId.YELLOW,
                 'gridType': MapGridType.BLOCK,
                 'triggerType': TriggerType.ITEM,
-                'triggerItem': 'sword',
+                'triggerItem': 'Iron Sword',
             },
             {
                 'meshName': 'pickable',
@@ -91,7 +91,7 @@ SceneList = [
                 'colorId': ColorId.YELLOW,
                 'gridType': MapGridType.BLOCK,
                 'triggerType': TriggerType.ITEM,
-                'triggerItem': 'fanri',
+                'triggerItem': 'Fan Ri Sword',
             },
             {
                 'meshName': 'pickable',
@@ -100,7 +100,7 @@ SceneList = [
                 'colorId': ColorId.YELLOW,
                 'gridType': MapGridType.BLOCK,
                 'triggerType': TriggerType.ITEM,
-                'triggerItem': 'shoe',
+                'triggerItem': 'Leather Shoe',
             },
             {
                 'meshName': 'pickable',
@@ -109,7 +109,7 @@ SceneList = [
                 'colorId': ColorId.YELLOW,
                 'gridType': MapGridType.BLOCK,
                 'triggerType': TriggerType.ITEM,
-                'triggerItem': 'armor',
+                'triggerItem': 'Cloth Armor',
             },
         ]
     },

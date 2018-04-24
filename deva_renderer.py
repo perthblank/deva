@@ -2,7 +2,7 @@ import curses
 import deva_color as dcolor
 from deva_sprite import Deva_Sprite
 from deva_mesh import Deva_Mesh
-from deva_const import ColorId, ChatTextType, ArrowAt
+from deva_const import ColorId, ChatTextType, ArrowAt, InventoryConst
 
 class Singleton:
     """
@@ -66,11 +66,19 @@ class Deva_Renderer:
         self._cameraPos = (0, 0)
 
         self.logList = []
+        self.itemMap = {}
+        self.meshMap = {}
 
     def __del__(self):
         curses.echo()
         curses.nocbreak()
         curses.endwin()
+
+    def setMaps(self, **kargs):
+        if 'itemMap' in kargs:
+            self.itemMap = kargs['itemMap']
+        if 'meshMap' in kargs:
+            self.meshMap = kargs['meshMap']
 
     def dim(self, d):
         self.width = d[0]
@@ -101,11 +109,10 @@ class Deva_Renderer:
                     self.stdscr.addstr(y, x, meshRow[indCol], attr)
 
     def renderMenu(self, menu, arrow = True):
-        self._menuArr.x = menu.x - 2
-        self._menuArr.y = menu.y + menu.opt
         self.renderSprite(menu, False)
-        
         if arrow:
+            self._menuArr.x = menu.x - 2
+            self._menuArr.y = menu.y + menu.opt
             self.renderSprite(self._menuArr, False)
 
     def renderChat(self, chat):
@@ -122,13 +129,18 @@ class Deva_Renderer:
                 self.stdscr.addstr(self.height - 2 - len(titles) + i - menu.height, 2, titles[i])
 
     def renderPicked(self, role, picked):
-        pickedName = picked['text']
+        pickedName = picked['name']
         self.stdscr.addstr(max(role.y - 1 - self.cameraY, 0), max(role.x - self.cameraX - int(len(pickedName)/2), 0), pickedName)
 
     def renderInventory(self, inventory):
-        #self.log(inventory.test())
         self.renderMenu(inventory.categoryMenu, inventory.arrowAt == ArrowAt.LEV1)
         self.renderMenu(inventory.currentItemMenu, inventory.arrowAt == ArrowAt.LEV2)
+        itemName = ''.join(inventory.currentItem.split('x')[:-1]).strip()
+        if itemName in self.itemMap:
+            meshName = self.itemMap[itemName]['meshName']
+            sprite = Deva_Sprite(self.meshMap.get(meshName, ''), InventoryConst.FIG_POS, 5)
+            self.renderSprite(sprite, False)
+
 
     def refresh(self):
         self.stdscr.refresh()

@@ -24,9 +24,7 @@ class Deva_Inventory:
         for item, num in self.currentItems.items():
             showLine = item + max(15-len(item), 0) * ' ' + 'x' + str(num)
             menuMap[showLine] = lambda : 0
-
         self._currentItemMenu = Deva_Menu(Deva_MenuMap(menuMap), InventoryConst.LIST_POS, mode = MenuConst.TRIGGER_BY_ENTER)
- 
 
     def showItems(self, t):
         def j():
@@ -35,7 +33,7 @@ class Deva_Inventory:
 
     def add(self, item):
         t = item['type']
-        n = item['text']
+        n = item['name']
         self._typeMap[t][n] = self._typeMap[t].get(n, 0) + 1
 
     def handleKey(self, keyCode):
@@ -46,8 +44,8 @@ class Deva_Inventory:
                 self._categoryMenu.arrDown()
             elif keyCode == KeyCode.D:
                 self.arrowAt = ArrowAt.LEV2
-
             self.loadItemMenu()
+            #TODO cache item menu
         else:
             if keyCode == KeyCode.W:
                 self._currentItemMenu.arrUp()
@@ -67,6 +65,10 @@ class Deva_Inventory:
     @property
     def currentItems(self):
         return self._typeMap[self._categoryMenu.currentKey]
+
+    @property
+    def currentItem(self):
+        return self._currentItemMenu.currentKey
 
     def test(self):
         return self._categoryMenu.currentKey

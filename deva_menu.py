@@ -42,7 +42,6 @@ class Deva_Menu(Deva_Sprite):
             self.callCurrent()
 
     def callCurrent(self):
-        DR.instance().log(self.currentKey)
         self.menuMap.call(self.currentKey)
 
     def arrUp(self):
@@ -63,6 +62,5 @@ class Deva_Menu(Deva_Sprite):
     def opt(self, val):
         self._opt = max(0, min(val, self.height -1))
         if self._mode == MenuConst.TRIGGER_BY_HOVER:
-            DR.instance().log("call")
             self.callCurrent()
 

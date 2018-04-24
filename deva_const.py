@@ -6,6 +6,7 @@ class KeyCode:
     A = ord('a')
     D = ord('d')
     I = ord('i')
+    Q = ord('q')
 
 
 class MoveKey:
@@ -84,11 +85,12 @@ class ItemType:
 class InventoryConst:
     MENU_POS = (5, 5)
     LIST_POS = (20, 5)
-    FIG_POS  = [25, 3]
+    FIG_POS  = (45, 3)
 
 class ListOf:
     CHAT = 1
     MESH = 2
+    ITEM = 3
 
 class ArrowAt:
     LEV1 = 1

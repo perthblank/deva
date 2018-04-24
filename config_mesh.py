@@ -145,6 +145,33 @@ _sword = [
 """,
 ]
 
+_swordFanri = [
+"""
+  ^
+ |||
+ |||
+ |+|
+=====
+  |
+""",
+"""
+  ^
+ |+|
+ |||
+ |||
+=====
+  |
+""",
+"""
+  ^
+ |+|
+ |||
+ |||
+=====
+  |
+""",
+]
+
 _itemPlaceHolder = [
 """
 |-----------|
@@ -197,6 +224,10 @@ MeshList = [
     {
         'name': 'sword',
         'mesh': _sword
+    },
+    {
+        'name': 'swordFanri',
+        'mesh': _swordFanri
     },
     {
         'name': 'placeHolder',
