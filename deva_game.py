@@ -174,7 +174,7 @@ class Deva_Game:
                             elif triggerObj['type'] == TriggerType.CHAT:
                                 self.activeChat(self.chatMap[triggerObj['item']])
                             elif triggerObj['type'] == TriggerType.ITEM:
-                                self.pickItem(selfitemMap[triggerObj['item']], triggerObj['spriteId'])
+                                self.pickItem(self.itemMap[triggerObj['item']], triggerObj['spriteId'])
                                 self.grids[self.getGridId(x + offset[0], y + offset[1])] = MapGridType.FREE
                             break
 
@@ -186,6 +186,7 @@ class Deva_Game:
             self.activeExitMenu(self._exitMenuMap)
 
         elif keyCode == KeyCode.I:
+            self._roleInventory.loadItemMenu()
             self.mode = ControlMode.INVENTORY
             #self.showInventory()
 

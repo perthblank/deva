@@ -17,7 +17,7 @@ SceneList = [
                 'bold': True,
             },
             {
-                'meshName': 'rock',
+                'meshName': 'rock_l',
                 'pos': [27, 8],
                 'zindex': 3,
                 'colorId': ColorId.MAGENTA,
@@ -25,7 +25,7 @@ SceneList = [
                 'bold': True,
             },
             {
-                'meshName': 'rock',
+                'meshName': 'rock_r',
                 'pos': [52, 8],
                 'zindex': 3,
                 'colorId': ColorId.MAGENTA,
