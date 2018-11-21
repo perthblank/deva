@@ -10,6 +10,8 @@ Enjoy an RPG, in terminal.
 
 Text-image rendered by `curses` in python.
 
+![screenshot](img/screenshot.png)
+
 ### Get started
 Simply run
 ```
@@ -164,4 +166,3 @@ Make sure the size of the terminal window is larger than viewport in game (defau
 
 ### Acknowledgement
 ![TianLong](img/tianlongbabu.jpg)
-
