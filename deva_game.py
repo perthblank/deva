@@ -254,7 +254,7 @@ class Deva_Game:
         self._ok = False
 
     def render(self):
-        time0 = time.clock()
+        time0 = time.time()
         fps = 0
         lastFps = 0
         while self._ok:
