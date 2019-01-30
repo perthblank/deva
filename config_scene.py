@@ -73,7 +73,7 @@ SceneList = [
                 'colorId': ColorId.YELLOW,
                 'gridType': MapGridType.BLOCK,
                 'triggerType': TriggerType.ITEM,
-                'triggerItem': 'herb',
+                'triggerItem': 'Green Herb',
             },
             {
                 'meshName': 'pickable',

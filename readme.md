@@ -10,7 +10,7 @@ Enjoy an RPG, in terminal.
 
 Text-image rendered by `curses` in python.
 
-![screenshot](img/screenshot.png)
+![screenshot](img/deva_gif0.gif)
 
 ### Get started
 Simply run

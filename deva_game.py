@@ -285,6 +285,7 @@ class Deva_Game:
                 time0 = time1
 
             self.renderer.addstr(0, 20, 'fps:' + str(lastFps))
+            self.renderer.addstr(1, 10, 'inventory: i, exit: q\n')
 
             self.renderer.printLog()
             self.renderer.refresh()
