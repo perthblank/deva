@@ -182,14 +182,54 @@ _swordFanri = [
 """,
 ]
 
+_dahuandan = [
+"""
+
+  oO
+   o"
+"""
+]
+
+_jinchuangyao = [
+"""
+  ^^^^^
+  | J |
+  [___]
+"""
+]
+
+_hreb = [
+"""
+  lTI
+ WOOOW
+  lTI
+   l
+"""
+]
+
 _itemPlaceHolder = [
 """
-|-----------|
-|           |
-|           |
-|           |
-|           |
-|-----------|
++------------+
+| No Picture |
++------------+
+"""
+]
+
+_armor0 = [
+"""
+   ( )
+=|--+--|=
+  |-+-|
+  |-+-|
+  [-+-]
+"""
+]
+
+_shoe0 = [
+"""
+ --
+ {x}___
+ |__|||)
 """
 ]
 
@@ -198,7 +238,7 @@ MeshList = [
     {
         'name': 'role',
         'mesh': _role,
-        'type': MeshType.ANIMATE_ON_TOUCH
+        'type': MeshType.ANIMATE_ON_TOUCH,
     },
     {
         'name': 'rock_r',
@@ -215,7 +255,7 @@ MeshList = [
     {
         'name': 'river',
         'mesh': _river,
-        'type': MeshType.ANIMATE_AUTO
+        'type': MeshType.ANIMATE_AUTO,
     },
     {
         'name': 'grass',
@@ -232,19 +272,41 @@ MeshList = [
     {
         'name': 'pickable',
         'mesh': _pickable,
-        'type': MeshType.ANIMATE_AUTO
+        'type': MeshType.ANIMATE_AUTO,
     },
     {
         'name': 'sword',
-        'mesh': _sword
+        'mesh': _sword,
     },
+    # TODO support inventory animation
     {
         'name': 'swordFanri',
-        'mesh': _swordFanri
+        'mesh': _swordFanri,
+        'type': MeshType.ANIMATE_AUTO,
     },
     {
         'name': 'placeHolder',
-        'mesh': _itemPlaceHolder
+        'mesh': _itemPlaceHolder,
+    },
+    {
+        'name': 'jinchuangyao',
+        'mesh': _jinchuangyao,
+    },
+    {
+        'name': 'dahuandan',
+        'mesh': _dahuandan,
+    },
+    {
+        'name': 'hreb',
+        'mesh': _hreb,
+    },
+    {
+        'name': 'shoe0',
+        'mesh': _shoe0,
+    },
+    {
+        'name': 'armor0',
+        'mesh': _armor0,
     },
 ]
 

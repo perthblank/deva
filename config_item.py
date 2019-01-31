@@ -14,27 +14,27 @@ ItemList = [
     {
         'name': 'JinChuangYao',
         'type': ItemType.MEDICINE,
-        'meshName': 'placeHolder',
+        'meshName': 'jinchuangyao',
     },
     {
         'name': 'DaHuanDan',
         'type': ItemType.MEDICINE,
-        'meshName': 'placeHolder',
+        'meshName': 'dahuandan',
     },
     {
         'name': 'Green Herb',
         'type': ItemType.MEDICINE,
-        'meshName': 'placeHolder',
+        'meshName': 'hreb',
     },
     {
         'name': 'Cloth Armor',
         'type': ItemType.ARMOR,
-        'meshName': 'placeHolder',
+        'meshName': 'armor0',
     },
     {
         'name': 'Leather Shoe',
         'type': ItemType.ARMOR,
-        'meshName': 'placeHolder',
+        'meshName': 'shoe0',
     },
 ]
 

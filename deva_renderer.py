@@ -4,6 +4,8 @@ from deva_sprite import Deva_Sprite
 from deva_mesh import Deva_Mesh
 from deva_const import ColorId, ChatTextType, ArrowAt, InventoryConst
 
+import threading
+
 class Singleton:
     """
     A non-thread-safe helper class to ease implementing singletons.
@@ -68,6 +70,9 @@ class Deva_Renderer:
         self.logList = []
         self.itemMap = {}
         self.meshMap = {}
+
+        self._lock = threading.Lock()
+
 
     def __del__(self):
         curses.echo()
@@ -170,17 +175,26 @@ class Deva_Renderer:
 
     @property
     def cameraX(self):
-        return self._cameraPos[0]
+        self._lock.acquire()
+        r = self._cameraPos[0]
+        self._lock.release()
+        return r
 
     @cameraX.setter
     def cameraX(self, x):
+        self._lock.acquire()
         self._cameraPos = (x, self._cameraPos[1])
+        self._lock.release()
 
     @property
     def cameraY(self):
-        return self._cameraPos[1]
+        self._lock.acquire()
+        r = self._cameraPos[1]
+        self._lock.release()
+        return r
 
     @cameraY.setter
     def cameraY(self, y):
+        self._lock.acquire()
         self._cameraPos = (self._cameraPos[0], y)
-
+        self._lock.release()
